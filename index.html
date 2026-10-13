@@ -3,480 +3,465 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAVEAISTRUCT™ | Mechanistic-Empirical Pavement Analysis Suite</title>
-  <meta name="description" content="Production-grade civil engineering software for flexible pavement mechanistic-empirical structural response, volumetric takeoff, and IRC:37-2018 compliance verification.">
+  <title>AI-Based Pavement Performance Predictor | Civil Engineering AI Suite</title>
+  <meta name="description" content="Instant machine learning structural response and material quantity interpolation for flexible highway pavements, replacing manual mechanical analysis.">
   
-  <!-- Engineering Fonts: Inter for UI & JetBrains Mono for tabular metrics -->
+  <!-- Modern Industrial & Futuristic Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=4.0">
 </head>
-<body class="cad-theme">
+<body class="theme-dark">
 
-  <!-- 1. Enterprise Top Application Bar -->
-  <header class="cad-appbar">
-    <div class="appbar-left">
-      <!-- CAD Suite Emblem -->
-      <div class="suite-emblem" title="PAVEAISTRUCT Enterprise Edition">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="3" width="20" height="18" rx="2" stroke="#64748B"/>
-          <line x1="2" y1="9" x2="22" y2="9" stroke="#64748B"/>
-          <line x1="2" y1="15" x2="22" y2="15" stroke="#64748B"/>
-          <line x1="12" y1="3" x2="12" y2="21" stroke="#EA580C" stroke-dasharray="2 2"/>
-          <circle cx="8" cy="9" r="1.5" fill="#0284C7"/>
-          <circle cx="16" cy="9" r="1.5" fill="#0284C7"/>
-        </svg>
-      </div>
-
-      <div class="appbar-title-block">
-        <div class="title-row">
-          <span class="suite-title">PAVEAISTRUCT<span class="tm">™</span></span>
-          <span class="suite-pipe">|</span>
-          <span class="suite-sub">Mechanistic-Empirical Pavement Analysis Suite</span>
-          <span class="cae-tag">v2.4-MEPDG</span>
+  <!-- Top Navigation & System Status Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
+            <!-- Highway road perspective -->
+            <path d="M7 26L13 6H19L25 26H7Z" fill="#1e293b" />
+            <!-- Road dash centerline -->
+            <path d="M16 8V12M16 15V20M16 23V26" stroke="#f97316" stroke-width="2" stroke-linecap="round" />
+            <!-- Sensor / AI Node dots -->
+            <circle cx="10" cy="20" r="1.5" fill="#38bdf8" />
+            <circle cx="22" cy="20" r="1.5" fill="#38bdf8" />
+            <circle cx="16" cy="10" r="1.5" fill="#38bdf8" />
+            <defs>
+              <linearGradient id="brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0f172a" />
+                <stop offset="1" stop-color="#1e3a8a" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
-        <div class="standard-row">
-          <span class="standard-spec">SPECIFICATION: IRC:37-2018 / AASHTO GUIDE COMPLIANT</span>
-          <span class="spec-sep">•</span>
-          <span class="standard-sub">MULTI-OUTPUT RANDOM FOREST CONTINUUM KERNEL</span>
+        <div>
+          <div class="brand-title-wrap">
+            <h1 class="brand-title">PAVE<span class="text-accent">AI</span> STRUCT</h1>
+            <span class="badge badge-subtle">v2.4-ML</span>
+          </div>
+          <p class="brand-subtitle">Mechanistic-Empirical Pavement Surrogate Engine</p>
         </div>
       </div>
-    </div>
 
-    <!-- Middle / Right: System Kernel Status & Top Utility Buttons -->
-    <div class="appbar-right">
-      <div class="kernel-status-chip" title="Continuum surrogate model active">
-        <span class="status-led led-green"></span>
-        <span class="status-label">Engine Status: Active (Kernel v2.4)</span>
-      </div>
+      <!-- Quick Actions, Presets & PDF Downloads -->
+      <div class="header-actions">
+        <div class="preset-selector">
+          <span class="preset-label">Presets:</span>
+          <button type="button" class="btn-preset active" data-preset="expressway">Heavy Expressway</button>
+          <button type="button" class="btn-preset" data-preset="national">National Highway</button>
+          <button type="button" class="btn-preset" data-preset="arterial">Urban Arterial</button>
+          <button type="button" class="btn-preset" data-preset="rural">Rural Link</button>
+        </div>
+        
+        <div class="status-indicator" title="Surrogate Random Forest Regressor Loaded">
+          <span class="status-dot"></span>
+          <span class="status-text">Random Forest Online</span>
+        </div>
 
-      <div class="appbar-divider"></div>
-
-      <!-- Functional Engineering Toolbar Buttons -->
-      <div class="toolbar-button-group">
-        <button type="button" class="btn-tb" id="importDxfBtn" title="Import roadway geometry or baseline CSV/DXF">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
+        <button id="themeToggleBtn" class="btn-icon" aria-label="Toggle light or dark theme" title="Toggle Light/Dark Theme">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
           </svg>
-          Import .DXF / .XLSX
-        </button>
-
-        <button type="button" class="btn-tb" id="projectConfigBtn" title="Project chainage, client, and climatic settings">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
-          Project Config
-        </button>
-
-        <button type="button" class="btn-tb" id="auditLogBtn" title="View execution log and parameter verification history">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
-          Audit Log
-        </button>
-
-        <div class="appbar-divider"></div>
-
-        <button type="button" class="btn-tb btn-tb-primary" id="exportBtn" title="Download Official Signed Engineering Calculation Note">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Export PDF Report
-        </button>
-
-        <button type="button" class="btn-tb" id="previewBtn" title="Open report in tab">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-          Preview PDF
         </button>
       </div>
     </div>
   </header>
 
-  <!-- 2. Sub-Toolbar: Road Hierarchy Presets Bar & Active Corridor Breadcrumb -->
-  <nav class="cad-subnav">
-    <div class="subnav-container">
-      <div class="project-indicator">
-        <span class="proj-label">ACTIVE SECTION:</span>
-        <span class="proj-id font-mono" id="dispProjectRef">NH-48/PKG-04/CH:12+400-13+400</span>
-        <span class="proj-meta">Carriageway: Dual 2-Lane (7.0m) • Design Speed: 100 km/h</span>
+  <!-- Hero Header Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-tag">ENGINEERING AI MODULE</span>
+          <span>IRC:37-2018 &amp; AASHTO M-E COMPLIANT</span>
+        </div>
+        <h2 class="hero-headline">AI-Based Pavement Performance Predictor</h2>
+        <p class="hero-subheadline">
+          Instantly interpolate predicted road performance and structural responses using advanced Machine Learning, bypassing manual mechanical analysis.
+        </p>
       </div>
 
-      <!-- Segmented Road Hierarchy Preset Tabs -->
-      <div class="preset-segmented-control" role="tablist" aria-label="Road hierarchy presets">
-        <span class="preset-control-label">ROAD PRESET:</span>
-        <button type="button" class="preset-segment active" data-preset="expressway" role="tab">Heavy Expressway (50–150 MSA)</button>
-        <button type="button" class="preset-segment" data-preset="national" role="tab">National Highway (30–50 MSA)</button>
-        <button type="button" class="preset-segment" data-preset="arterial" role="tab">Urban Arterial (10–30 MSA)</button>
-        <button type="button" class="preset-segment" data-preset="rural" role="tab">Rural Collector (1–10 MSA)</button>
+      <div class="hero-metrics-pill">
+        <div class="hero-stat">
+          <span class="hero-stat-val">&lt; 4 ms</span>
+          <span class="hero-stat-lbl">Inference Latency</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-val">R² 0.994</span>
+          <span class="hero-stat-lbl">Surrogate Accuracy</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-val">3-Layer</span>
+          <span class="hero-stat-lbl">Elastic Continuum</span>
+        </div>
       </div>
     </div>
-  </nav>
+  </section>
 
-  <!-- 3. Main Workstation Area: 2-Column Desktop Grid -->
-  <main class="cad-workspace">
+  <!-- Main Layout Container: 2-Column Dashboard -->
+  <main class="dashboard-container">
     
-    <!-- LEFT SIDEBAR: Engineering Property Grid / Layer Input Panel -->
-    <aside class="cad-property-panel">
-      <div class="panel-inner-box">
-        
-        <div class="panel-top-tab">
-          <div class="tab-label-group">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="3" y1="9" x2="21" y2="9"></line>
-              <line x1="9" y1="21" x2="9" y2="9"></line>
+    <!-- Left Column: Input Form Panel -->
+    <aside class="input-panel-wrapper">
+      <div class="panel-card input-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <svg class="panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
             </svg>
-            <span class="panel-caption">STRUCTURAL LAYER PROPERTY GRID</span>
+            <h3 class="panel-title">Pavement Layer Architecture</h3>
           </div>
-          <button type="button" id="resetBtn" class="btn-grid-action" title="Revert all fields to IRC:37 defaults">Defaults</button>
+          <button type="button" id="resetBtn" class="btn-text-action" title="Reset all fields to defaults">Defaults</button>
         </div>
 
-        <form id="pavementForm" class="property-grid-form" novalidate>
-
-          <!-- Group A: Design Traffic & Axle Loading -->
-          <fieldset class="cad-fieldset">
-            <legend class="cad-legend">
-              <span class="legend-index">01</span>
-              DESIGN TRAFFIC LOADING (ESAL)
-            </legend>
-
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="trafficLoad">Cumulative Traffic</label>
-                <span class="prop-subtext">80 kN Dual-Tire Repetitions</span>
-              </div>
-              <div class="prop-input-col">
-                <div class="input-with-unit">
-                  <input type="number" id="trafficLoad" name="trafficLoad" min="1" max="300" step="1" value="50" class="cad-input font-mono" required>
-                  <span class="input-unit">MSA</span>
-                </div>
-                <input type="range" id="trafficLoadRange" min="1" max="250" step="1" value="50" class="cad-range">
+        <form id="pavementForm" class="pavement-form" novalidate>
+          
+          <!-- Group 1: Design Traffic -->
+          <div class="form-layer-group group-traffic">
+            <div class="group-header">
+              <div class="layer-indicator indicator-traffic"></div>
+              <div class="group-title-wrap">
+                <span class="group-label">DESIGN TRAFFIC LOADING</span>
+                <span class="group-sub">Standard 80 kN Dual-Tire Axle Repetitions</span>
               </div>
             </div>
-
-            <div class="property-row compact">
-              <span class="prop-desc">Standard Dual Wheel Load: 40 kN | Contact Stress: 0.56 MPa</span>
-            </div>
-          </fieldset>
-
-          <!-- Group B: Layer 1 - Bituminous Surface Course -->
-          <fieldset class="cad-fieldset">
-            <legend class="cad-legend">
-              <span class="legend-index">02</span>
-              LAYER 1: BITUMINOUS COURSES (BC + DBM)
-            </legend>
-
-            <!-- Specification Mix Dropdown -->
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="bituminousMixType">Material Mix Spec</label>
+            
+            <div class="input-field-wrap">
+              <div class="label-row">
+                <label for="trafficLoad">Traffic Load (MSA)</label>
+                <span class="unit-badge">Million Standard Axles</span>
               </div>
-              <div class="prop-input-col">
-                <select id="bituminousMixType" class="cad-select font-mono">
-                  <option value="bc_vg40" selected>BC Grade-1 + DBM (VG-40 Bitumen @ 35°C)</option>
-                  <option value="bc_vg30">BC Grade-2 + DBM (VG-30 Bitumen @ 30°C)</option>
-                  <option value="sma_crmb">Stone Matrix Asphalt (CRMB-55 Modified)</option>
-                  <option value="custom">Custom Modulus Specification</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="bituminousThickness">Layer Thickness (h₁)</label>
-                <span class="prop-subtext">Wearing + Binder Course</span>
-              </div>
-              <div class="prop-input-col">
-                <div class="input-with-unit">
-                  <input type="number" id="bituminousThickness" name="bituminousThickness" min="40" max="350" step="5" value="150" class="cad-input font-mono" required>
-                  <span class="input-unit">mm</span>
-                </div>
-                <input type="range" id="bituminousThicknessRange" min="40" max="300" step="5" value="150" class="cad-range">
-              </div>
-            </div>
-
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="bituminousModulus">Resilient Modulus (E₁)</label>
-                <span class="prop-subtext">Dynamic Elastic Modulus</span>
-              </div>
-              <div class="prop-input-col">
-                <div class="input-with-unit">
-                  <input type="number" id="bituminousModulus" name="bituminousModulus" min="800" max="6000" step="50" value="3000" class="cad-input font-mono" required>
-                  <span class="input-unit">MPa</span>
-                </div>
-                <input type="range" id="bituminousModulusRange" min="800" max="6000" step="50" value="3000" class="cad-range">
-              </div>
-            </div>
-          </fieldset>
-
-          <!-- Group C: Layer 2 - Granular Base & Subbase -->
-          <fieldset class="cad-fieldset">
-            <legend class="cad-legend">
-              <span class="legend-index">03</span>
-              LAYER 2: UNBOUND GRANULAR BASE (WMM + GSB)
-            </legend>
-
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="granularMixType">Base / Subbase Spec</label>
-              </div>
-              <div class="prop-input-col">
-                <select id="granularMixType" class="cad-select font-mono">
-                  <option value="wmm_gsb1" selected>Wet Mix Macadam (WMM) + GSB Grade-I</option>
-                  <option value="crm_gsb2">Crushed Rock Macadam + GSB Grade-II</option>
-                  <option value="ctb_sami">Cement Treated Base (CTB) + SAMI Interlayer</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="granularThickness">Layer Thickness (h₂)</label>
-                <span class="prop-subtext">Base (150) + Subbase (100)</span>
-              </div>
-              <div class="prop-input-col">
-                <div class="input-with-unit">
-                  <input type="number" id="granularThickness" name="granularThickness" min="100" max="500" step="5" value="250" class="cad-input font-mono" required>
-                  <span class="input-unit">mm</span>
-                </div>
-                <input type="range" id="granularThicknessRange" min="100" max="500" step="5" value="250" class="cad-range">
-              </div>
-            </div>
-
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="granularModulus">Composite Modulus (E₂)</label>
-                <span class="prop-subtext">Equivalent Layer Stiffness</span>
-              </div>
-              <div class="prop-input-col">
-                <div class="input-with-unit">
-                  <input type="number" id="granularModulus" name="granularModulus" min="100" max="500" step="10" value="250" class="cad-input font-mono" required>
-                  <span class="input-unit">MPa</span>
-                </div>
-                <input type="range" id="granularModulusRange" min="100" max="450" step="10" value="250" class="cad-range">
-              </div>
-            </div>
-          </fieldset>
-
-          <!-- Group D: Layer 3 - Native Subgrade Soil Medium -->
-          <fieldset class="cad-fieldset">
-            <legend class="cad-legend">
-              <span class="legend-index">04</span>
-              LAYER 3: PREPARED SUBGRADE SOIL MEDIUM
-            </legend>
-
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="subgradeCbr">Design CBR (%)</label>
-                <span class="prop-subtext">California Bearing Ratio</span>
-              </div>
-              <div class="prop-input-col">
-                <div class="input-with-unit">
-                  <input type="number" id="subgradeCbr" min="2" max="25" step="0.5" value="6.5" class="cad-input font-mono">
-                  <span class="input-unit">%</span>
+              <div class="range-input-group">
+                <input type="range" id="trafficLoadRange" min="1" max="250" step="1" value="50" class="styled-slider">
+                <div class="number-input-wrap">
+                  <input type="number" id="trafficLoad" name="trafficLoad" min="1" max="500" step="1" value="50" required>
+                  <span class="input-affix">MSA</span>
                 </div>
               </div>
+              <span class="field-hint">Range: 1 – 250 MSA (Typical Expressway: 50–150 MSA)</span>
+            </div>
+          </div>
+
+          <!-- Group 2: Bituminous Layer (Top) -->
+          <div class="form-layer-group group-bituminous">
+            <div class="group-header">
+              <div class="layer-indicator indicator-bituminous"></div>
+              <div class="group-title-wrap">
+                <span class="group-label">BITUMINOUS LAYER (TOP)</span>
+                <span class="group-sub">Wearing Course (BC) + Dense Bituminous Macadam (DBM)</span>
+              </div>
             </div>
 
-            <div class="property-row">
-              <div class="prop-label-col">
-                <label for="subgradeModulus">Resilient Modulus (E₃ / MR)</label>
-                <span class="prop-subtext" id="cbrFormulaLabel">MR = 17.6 × CBR^0.64</span>
-              </div>
-              <div class="prop-input-col">
-                <div class="input-with-unit">
-                  <input type="number" id="subgradeModulus" name="subgradeModulus" min="15" max="200" step="1" value="50" class="cad-input font-mono" required>
-                  <span class="input-unit">MPa</span>
+            <div class="input-grid-2">
+              <div class="input-field-wrap">
+                <div class="label-row">
+                  <label for="bituminousThickness">Thickness (mm)</label>
                 </div>
-                <input type="range" id="subgradeModulusRange" min="15" max="150" step="1" value="50" class="cad-range">
+                <div class="number-input-wrap">
+                  <input type="number" id="bituminousThickness" name="bituminousThickness" min="30" max="400" step="5" value="150" required>
+                  <span class="input-affix">mm</span>
+                </div>
+                <input type="range" id="bituminousThicknessRange" min="40" max="300" step="5" value="150" class="styled-slider">
+              </div>
+
+              <div class="input-field-wrap">
+                <div class="label-row">
+                  <label for="bituminousModulus">Elastic Modulus (MPa)</label>
+                </div>
+                <div class="number-input-wrap">
+                  <input type="number" id="bituminousModulus" name="bituminousModulus" min="500" max="8000" step="50" value="3000" required>
+                  <span class="input-affix">MPa</span>
+                </div>
+                <input type="range" id="bituminousModulusRange" min="800" max="6000" step="50" value="3000" class="styled-slider">
               </div>
             </div>
-          </fieldset>
+          </div>
 
-          <!-- Group E: Corridor Footprint & Geometry -->
-          <fieldset class="cad-fieldset">
-            <legend class="cad-legend">
-              <span class="legend-index">05</span>
-              PROJECT CORRIDOR GEOMETRY
-            </legend>
+          <!-- Group 3: Granular Layer (Base) -->
+          <div class="form-layer-group group-granular">
+            <div class="group-header">
+              <div class="layer-indicator indicator-granular"></div>
+              <div class="group-title-wrap">
+                <span class="group-label">GRANULAR LAYER (BASE &amp; SUBBASE)</span>
+                <span class="group-sub">Wet Mix Macadam (WMM) + Granular Subbase (GSB)</span>
+              </div>
+            </div>
 
-            <div class="property-grid-2col">
-              <div class="property-cell">
-                <label for="roadLength">Section Length (L)</label>
-                <div class="input-with-unit">
-                  <input type="number" id="roadLength" name="roadLength" min="0.1" max="100" step="0.1" value="1.0" class="cad-input font-mono" required>
-                  <span class="input-unit">km</span>
+            <div class="input-grid-2">
+              <div class="input-field-wrap">
+                <div class="label-row">
+                  <label for="granularThickness">Thickness (mm)</label>
+                </div>
+                <div class="number-input-wrap">
+                  <input type="number" id="granularThickness" name="granularThickness" min="100" max="600" step="5" value="250" required>
+                  <span class="input-affix">mm</span>
+                </div>
+                <input type="range" id="granularThicknessRange" min="100" max="500" step="5" value="250" class="styled-slider">
+              </div>
+
+              <div class="input-field-wrap">
+                <div class="label-row">
+                  <label for="granularModulus">Elastic Modulus (MPa)</label>
+                </div>
+                <div class="number-input-wrap">
+                  <input type="number" id="granularModulus" name="granularModulus" min="50" max="600" step="10" value="250" required>
+                  <span class="input-affix">MPa</span>
+                </div>
+                <input type="range" id="granularModulusRange" min="100" max="450" step="10" value="250" class="styled-slider">
+              </div>
+            </div>
+          </div>
+
+          <!-- Group 4: Soil Subgrade (Bottom) -->
+          <div class="form-layer-group group-subgrade">
+            <div class="group-header">
+              <div class="layer-indicator indicator-subgrade"></div>
+              <div class="group-title-wrap">
+                <span class="group-label">SOIL SUBGRADE (BOTTOM)</span>
+                <span class="group-sub">Compacted Native Subgrade Foundation</span>
+              </div>
+            </div>
+
+            <div class="input-field-wrap">
+              <div class="label-row">
+                <label for="subgradeModulus">Elastic Modulus (MPa)</label>
+                <span class="unit-badge" id="cbrEstimate">CBR ≈ 6.5%</span>
+              </div>
+              <div class="range-input-group">
+                <input type="range" id="subgradeModulusRange" min="15" max="150" step="1" value="50" class="styled-slider">
+                <div class="number-input-wrap">
+                  <input type="number" id="subgradeModulus" name="subgradeModulus" min="10" max="250" step="1" value="50" required>
+                  <span class="input-affix">MPa</span>
+                </div>
+              </div>
+              <span class="field-hint">Resilient Modulus $M_R = 10 \times CBR$ (up to CBR 5%) / $17.6 \times CBR^{0.64}$</span>
+            </div>
+          </div>
+
+          <!-- Group 5: Road Stretch Dimensions -->
+          <div class="form-layer-group group-dimensions">
+            <div class="group-header">
+              <div class="layer-indicator indicator-dimensions"></div>
+              <div class="group-title-wrap">
+                <span class="group-label">ROAD STRETCH DIMENSIONS</span>
+                <span class="group-sub">Project Corridor Geometry</span>
+              </div>
+            </div>
+
+            <div class="input-grid-2">
+              <div class="input-field-wrap">
+                <div class="label-row">
+                  <label for="roadLength">Length (km)</label>
+                </div>
+                <div class="number-input-wrap">
+                  <input type="number" id="roadLength" name="roadLength" min="0.1" max="200" step="0.1" value="1.0" required>
+                  <span class="input-affix">km</span>
                 </div>
               </div>
 
-              <div class="property-cell">
-                <label for="roadWidth">Pavement Width (W)</label>
-                <div class="input-with-unit">
-                  <input type="number" id="roadWidth" name="roadWidth" min="3.0" max="30" step="0.25" value="7.0" class="cad-input font-mono" required>
-                  <span class="input-unit">m</span>
+              <div class="input-field-wrap">
+                <div class="label-row">
+                  <label for="roadWidth">Width (m)</label>
+                </div>
+                <div class="number-input-wrap">
+                  <input type="number" id="roadWidth" name="roadWidth" min="2.0" max="45" step="0.25" value="7.0" required>
+                  <span class="input-affix">m</span>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="property-row compact">
-              <span class="prop-desc font-mono">Camber Crossfall: 2.5% | Total Carriageway Area: <span id="dispCarriagewayArea">7,000</span> m²</span>
-            </div>
-          </fieldset>
-
-          <!-- Execution Button in Utilitarian CAD Style -->
-          <div class="form-submit-row">
-            <button type="submit" id="calculateBtn" class="btn-execute">
+          <!-- Action Button -->
+          <div class="form-action-area">
+            <button type="submit" id="calculateBtn" class="btn-primary-action">
               <span class="btn-spinner" id="btnSpinner"></span>
-              <svg class="exec-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-              <span>RUN STRUCTURAL ANALYSIS &amp; TAKEOFF</span>
-              <kbd class="btn-shortcut">Ctrl+↵</kbd>
+              <span class="btn-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </span>
+              <span class="btn-text" id="btnText">Calculate Performance &amp; Quantities</span>
             </button>
+            <p class="action-caption">
+              ⚡ Evaluated via Multi-Output Random Forest surrogate model. Zero latency.
+            </p>
           </div>
 
         </form>
       </div>
     </aside>
 
-    <!-- RIGHT MAIN WORKSTATION: Engineering Output Viewport & Analysis -->
-    <section class="cad-viewport-area">
-
-      <!-- Viewport Header Strip -->
-      <div class="viewport-header-strip">
-        <div class="viewport-title-group">
-          <h2 class="viewport-heading">STRUCTURAL INTEGRITY &amp; VOLUMETRIC ANALYSIS</h2>
-          <span class="viewport-timestamp font-mono" id="lastUpdated">SOLVER: SURROGATE RF-2.4 • RUNTIME: 2.4 ms • ITERATIONS: CONVERGED</span>
+    <!-- Right Column: Results Dashboard Area -->
+    <section class="results-dashboard-area">
+      
+      <!-- Section Header with Real-time compute timestamp -->
+      <div class="results-top-bar">
+        <div class="results-heading-group">
+          <h3 class="results-heading">Structural Response &amp; Material Analysis</h3>
+          <p class="results-subheading" id="lastUpdated">Updated just now &bull; Continuum mechanics surrogate synthesis</p>
         </div>
-
-        <div class="viewport-status-group">
-          <div class="compliance-badge badge-pass" id="overallStatusBadge">
-            <span class="status-marker">■</span>
-            <span id="overallStatusText">IRC:37 COMPLIANT (PASS)</span>
+        
+        <!-- Live Status & PDF Export Actions -->
+        <div class="results-quick-metrics">
+          <div class="pill-chip pill-chip-success" id="overallStatusBadge">
+            <span class="chip-dot"></span>
+            <span id="overallStatusText">DESIGN COMPLIANT (IRC:37)</span>
           </div>
+
+          <button type="button" class="btn-action-outline" id="previewBtn" title="Preview PDF Report in New Tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            Preview PDF
+          </button>
+
+          <button type="button" class="btn-action-primary" id="exportBtn" title="Download Official PDF Engineering Calculation Report">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            Download PDF Report
+          </button>
         </div>
       </div>
 
-      <!-- 1. MECHANICAL RESPONSE ANALYSIS MATRIX (4 Precision Technical Panels) -->
-      <div class="section-container">
-        <div class="table-section-header">
-          <span class="table-title">1. MECHANISTIC STRAIN RESPONSES (40 kN DUAL-WHEEL TANDEM LOADING)</span>
-          <span class="table-meta">IRC:37-2018 Mechanistic-Empirical Criteria Limits</span>
+      <!-- Part A: Mechanical Responses (4 Distinct Data Cards) -->
+      <div class="dashboard-section">
+        <div class="section-badge-header">
+          <h4 class="section-title">
+            <span class="title-accent-bar"></span>
+            MECHANICAL RESPONSES
+          </h4>
+          <span class="section-subtitle">Surrogate ML predicted microstrains &amp; failure criteria under 40 kN dual-wheel loading</span>
         </div>
 
-        <div class="technical-cards-grid">
+        <div class="cards-grid-4">
           
-          <!-- Panel 1: Tensile Strain -->
-          <div class="cad-data-card" id="cardTensileStrain">
-            <div class="card-caption-bar">
-              <span class="card-code">CRIT-01 • BOTTOM-UP FATIGUE</span>
-              <span class="tag-status tag-pass" id="tsTag">OPTIMAL</span>
+          <!-- Card 1: Tensile Strain (TS) -->
+          <div class="data-card card-mechanical" id="cardTensileStrain">
+            <div class="card-glass-glow"></div>
+            <div class="card-header">
+              <span class="card-category">CRITICAL STRAIN</span>
+              <span class="status-tag status-safe" id="tsTag">OPTIMAL</span>
             </div>
-            <div class="card-content">
-              <div class="card-name">Tensile Strain at Bituminous Base (&epsilon;<sub>t</sub>)</div>
-              <div class="card-metric-row">
-                <span class="card-metric-val font-mono" id="tsValue">178.4</span>
-                <span class="card-metric-unit font-mono">&mu;&epsilon;</span>
+            <div class="card-body">
+              <h5 class="card-title">Tensile Strain (TS)</h5>
+              <div class="metric-display">
+                <span class="metric-value font-mono" id="tsValue">178.4</span>
+                <span class="metric-unit">&mu;&epsilon;</span>
               </div>
-              <div class="card-threshold font-mono">
-                Permissible Limit: <span class="val-target">&le; 240.0 &mu;&epsilon;</span>
-              </div>
+              <p class="card-interpretation">
+                <strong class="highlight-text">Bottom-up Fatigue:</strong> Critical horizontal tensile strain (&epsilon;<sub>t</sub>) at bottom of bituminous layer.
+              </p>
             </div>
-            <div class="card-footer-strip">
-              <div class="bar-track">
-                <div class="bar-fill fill-green" id="tsProgressBar" style="width: 45%;"></div>
+            <div class="card-footer">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="tsProgressBar" style="width: 45%;"></div>
               </div>
-              <div class="card-footer-meta font-mono">
-                <span>Margin: <strong id="tsSafetyMargin">+25.7% (Safe)</strong></span>
-                <span>Damage D<sub>F</sub>: <strong id="tsDamageVal">0.59</strong></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel 2: Compressive Strain -->
-          <div class="cad-data-card" id="cardCompressiveStrain">
-            <div class="card-caption-bar">
-              <span class="card-code">CRIT-02 • SUBGRADE RUTTING</span>
-              <span class="tag-status tag-pass" id="csTag">SAFE</span>
-            </div>
-            <div class="card-content">
-              <div class="card-name">Compressive Strain on Subgrade Top (&epsilon;<sub>v</sub>)</div>
-              <div class="card-metric-row">
-                <span class="card-metric-val font-mono" id="csValue">442.8</span>
-                <span class="card-metric-unit font-mono">&mu;&epsilon;</span>
-              </div>
-              <div class="card-threshold font-mono">
-                Permissible Limit: <span class="val-target">&le; 620.0 &mu;&epsilon;</span>
-              </div>
-            </div>
-            <div class="card-footer-strip">
-              <div class="bar-track">
-                <div class="bar-fill fill-blue" id="csProgressBar" style="width: 58%;"></div>
-              </div>
-              <div class="card-footer-meta font-mono">
-                <span>Margin: <strong id="csSafetyMargin">+28.6% (Safe)</strong></span>
-                <span>Damage D<sub>R</sub>: <strong id="csDamageVal">0.45</strong></span>
+              <div class="card-meta-row">
+                <span class="meta-label">Limit &le; 240.0 &mu;&epsilon;</span>
+                <span class="meta-val font-mono" id="tsSafetyMargin">+25.7% Margin</span>
               </div>
             </div>
           </div>
 
-          <!-- Panel 3: Fatigue Criteria (Life Repetitions) -->
-          <div class="cad-data-card" id="cardFatigueCriteria">
-            <div class="card-caption-bar">
-              <span class="card-code">CRIT-03 • REPETITION CAPACITY</span>
-              <span class="tag-status tag-neutral" id="fatigueTag">IRC:37 EQ 3.1</span>
+          <!-- Card 2: Compressive Strain (CS) -->
+          <div class="data-card card-mechanical" id="cardCompressiveStrain">
+            <div class="card-glass-glow"></div>
+            <div class="card-header">
+              <span class="card-category">SUBGRADE STRAIN</span>
+              <span class="status-tag status-safe" id="csTag">SAFE</span>
             </div>
-            <div class="card-content">
-              <div class="card-name">Allowable Fatigue Life (N<sub>f</sub>)</div>
-              <div class="card-metric-row">
-                <span class="card-metric-val font-mono font-cyan" id="fatigueValue">1.34e+41</span>
+            <div class="card-body">
+              <h5 class="card-title">Compressive Strain (CS)</h5>
+              <div class="metric-display">
+                <span class="metric-value font-mono" id="csValue">442.8</span>
+                <span class="metric-unit">&mu;&epsilon;</span>
               </div>
-              <div class="card-threshold font-mono">
-                Allowable Axles: <span class="val-target" id="nfCycles">8.42 &times; 10<sup>7</sup></span> Repetitions
-              </div>
+              <p class="card-interpretation">
+                <strong class="highlight-text">Surface Rutting:</strong> Vertical compressive strain (&epsilon;<sub>v</sub>) at top of subgrade foundation.
+              </p>
             </div>
-            <div class="card-footer-strip">
-              <div class="card-footer-meta font-mono">
-                <span>Cumulative Damage Ratio:</span>
-                <span id="fatigueDamageRatio" class="font-bold">0.59 (SAFE &le; 1.0)</span>
+            <div class="card-footer">
+              <div class="progress-bar-container">
+                <div class="progress-bar progress-bar-blue" id="csProgressBar" style="width: 58%;"></div>
+              </div>
+              <div class="card-meta-row">
+                <span class="meta-label">Limit &le; 620.0 &mu;&epsilon;</span>
+                <span class="meta-val font-mono" id="csSafetyMargin">+28.6% Margin</span>
               </div>
             </div>
           </div>
 
-          <!-- Panel 4: Rutting Criteria -->
-          <div class="cad-data-card" id="cardRuttingCriteria">
-            <div class="card-caption-bar">
-              <span class="card-code">CRIT-04 • PERMISSIBLE DEFORMATION</span>
-              <span class="tag-status tag-neutral" id="ruttingTag">AASHTO M-E</span>
+          <!-- Card 3: Fatigue Criteria -->
+          <div class="data-card card-mechanical" id="cardFatigueCriteria">
+            <div class="card-glass-glow"></div>
+            <div class="card-header">
+              <span class="card-category">LIFE CRITERIA</span>
+              <span class="status-tag status-accent" id="fatigueTag">IRC:37-2018</span>
             </div>
-            <div class="card-content">
-              <div class="card-name">Allowable Rutting Capacity (N<sub>r</sub>)</div>
-              <div class="card-metric-row">
-                <span class="card-metric-val font-mono font-cyan" id="ruttingValue">1.70e-16</span>
+            <div class="card-body">
+              <h5 class="card-title">Fatigue Criteria</h5>
+              <div class="metric-display">
+                <span class="metric-value font-mono scientific-text" id="fatigueValue">1.34e+41</span>
               </div>
-              <div class="card-threshold font-mono">
-                Allowable Axles: <span class="val-target" id="nrCycles">1.12 &times; 10<sup>8</sup></span> Repetitions
+              <p class="card-interpretation">
+                Calculated fatigue life coefficient / allowable repetitions before 20% alligator cracking fatigue failure.
+              </p>
+            </div>
+            <div class="card-footer">
+              <div class="card-meta-box">
+                <div class="meta-cell">
+                  <span class="cell-label">Predicted Nf</span>
+                  <span class="cell-value font-mono" id="nfCycles">8.42 &times; 10<sup>7</sup></span>
+                </div>
+                <div class="meta-cell">
+                  <span class="cell-label">Fatigue Damage D<sub>F</sub></span>
+                  <span class="cell-value font-mono" id="fatigueDamageRatio">0.59 (OK)</span>
+                </div>
               </div>
             </div>
-            <div class="card-footer-strip">
-              <div class="card-footer-meta font-mono">
-                <span>Rutting Damage Ratio:</span>
-                <span id="ruttingDamageRatio" class="font-bold">0.45 (SAFE &le; 1.0)</span>
+          </div>
+
+          <!-- Card 4: Rutting Criteria -->
+          <div class="data-card card-mechanical" id="cardRuttingCriteria">
+            <div class="card-glass-glow"></div>
+            <div class="card-header">
+              <span class="card-category">DEFORMATION CRITERIA</span>
+              <span class="status-tag status-accent" id="ruttingTag">AASHTO / IRC</span>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Rutting Criteria</h5>
+              <div class="metric-display">
+                <span class="metric-value font-mono scientific-text" id="ruttingValue">1.70e-16</span>
+              </div>
+              <p class="card-interpretation">
+                Rutting damage multiplier / critical deformation parameter threshold before 20mm surface rut depth.
+              </p>
+            </div>
+            <div class="card-footer">
+              <div class="card-meta-box">
+                <div class="meta-cell">
+                  <span class="cell-label">Allowable Nr</span>
+                  <span class="cell-value font-mono" id="nrCycles">1.12 &times; 10<sup>8</sup></span>
+                </div>
+                <div class="meta-cell">
+                  <span class="cell-label">Rutting Damage D<sub>R</sub></span>
+                  <span class="cell-value font-mono" id="ruttingDamageRatio">0.45 (OK)</span>
+                </div>
               </div>
             </div>
           </div>
@@ -484,328 +469,278 @@
         </div>
       </div>
 
-      <!-- 2. VOLUMETRIC MATERIAL TAKEOFF & BILL OF QUANTITIES (BoQ) -->
-      <div class="section-container">
-        <div class="table-section-header">
-          <span class="table-title">2. BILL OF QUANTITIES (BoQ) &amp; MATERIAL TAKEOFF SCHEDULE</span>
-          <span class="table-meta font-mono">Formulation: Volume (m³) = Length (km) × 1000 × Width (m) × (Thickness (mm) / 1000)</span>
+      <!-- Part B: Material Quantities (2 Distinct Data Cards) -->
+      <div class="dashboard-section">
+        <div class="section-badge-header">
+          <h4 class="section-title">
+            <span class="title-accent-bar orange"></span>
+            MATERIAL QUANTITIES (VOLUME &amp; TONNAGE)
+          </h4>
+          <span class="section-subtitle">Real-time volumetric extraction for civil estimation &bull; V = L &times; 1000 &times; W &times; (T / 1000)</span>
         </div>
 
-        <div class="cad-table-container">
-          <table class="cad-table font-mono" id="boqTable">
-            <thead>
-              <tr>
-                <th style="width: 28%;">MATERIAL LAYER DESCRIPTION</th>
-                <th style="width: 14%;">THICKNESS</th>
-                <th style="width: 18%;">NET VOLUME (m³)</th>
-                <th style="width: 12%;">DENSITY</th>
-                <th style="width: 14%;">NET MASS (MT)</th>
-                <th style="width: 14%;">LOGISTICS (20 MT)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <strong class="font-sans">Bituminous Surface &amp; Binder (BC + DBM)</strong>
-                  <div class="row-subtext font-sans">VG-40 Bitumen Wearing Course (50mm) + DBM Course (100mm)</div>
-                </td>
-                <td id="tdBitThick">150 mm</td>
-                <td><strong class="font-cyan" id="bituminousVolume">1,050.00</strong> m³</td>
-                <td>2.40 t/m³</td>
-                <td id="bituminousTonnage">2,520.00 MT</td>
-                <td><span class="tag-logistics" id="bituminousTrucks">≈ 126 Tippers</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <strong class="font-sans">Granular Base &amp; Subbase (WMM + GSB)</strong>
-                  <div class="row-subtext font-sans">Crushed Aggregates (150mm WMM) + Granular Subbase (100mm GSB)</div>
-                </td>
-                <td id="tdGranThick">250 mm</td>
-                <td><strong class="font-cyan" id="granularVolume">1,750.00</strong> m³</td>
-                <td>2.10 t/m³</td>
-                <td id="granularTonnage">3,675.00 MT</td>
-                <td><span class="tag-logistics" id="granularTrucks">≈ 184 Tippers</span></td>
-              </tr>
-              <tr class="cad-table-total">
-                <td><strong class="font-sans">COMPOSITE PAVEMENT STRUCTURE (TOTAL)</strong></td>
-                <td id="tdTotalThick">400 mm</td>
-                <td><strong id="totalVolume">2,800.00</strong> m³</td>
-                <td>—</td>
-                <td><strong id="totalTonnage">6,195.00</strong> MT</td>
-                <td><span class="tag-logistics total" id="totalTrucks">≈ 310 Trips</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <div class="cards-grid-2">
+          
+          <!-- Quantity Card 1: Bituminous Quantity -->
+          <div class="data-card card-quantity card-bituminous-qty">
+            <div class="qty-accent-bar bituminous"></div>
+            <div class="card-body">
+              <div class="qty-header-row">
+                <div>
+                  <span class="card-category">TOP LAYER TOTAL VOLUME</span>
+                  <h5 class="card-title">Bituminous Quantity</h5>
+                </div>
+                <div class="qty-icon-box bit-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                </div>
+              </div>
 
-      <!-- 3. CAD STRUCTURAL CROSS-SECTION BLUEPRINT VIEWPORT -->
-      <div class="section-container">
-        <div class="table-section-header">
-          <div class="title-with-actions">
-            <span class="table-title">3. PARAMETRIC CROSS-SECTION SCHEMATIC &amp; STRESS DISPERSION BLUEPRINT</span>
-            <span class="cad-scale-badge font-mono">CAD VIEWPORT • 1:20 VERTICAL EXAGGERATION</span>
+              <div class="metric-display large">
+                <span class="metric-value font-mono" id="bituminousVolume">1,050.00</span>
+                <span class="metric-unit">m&sup3;</span>
+              </div>
+
+              <div class="formula-breakdown font-mono" id="bituminousFormulaBox">
+                Formula: 1.0 km &times; 1000 &times; 7.0 m &times; (150 mm / 1000) = 1,050.00 m&sup3;
+              </div>
+
+              <div class="quantities-meta-grid">
+                <div class="meta-stat-pill">
+                  <span class="stat-lbl">Estimated Tonnage</span>
+                  <span class="stat-val font-mono" id="bituminousTonnage">2,520.0 MT</span>
+                  <span class="stat-sub">&rho; &approx; 2.40 t/m&sup3;</span>
+                </div>
+                <div class="meta-stat-pill">
+                  <span class="stat-lbl">Truck Loads</span>
+                  <span class="stat-val font-mono" id="bituminousTrucks">&approx; 126 Tippers</span>
+                  <span class="stat-sub">@ 20 MT / dumper</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="viewport-quick-tools">
-            <span class="tool-caption font-mono">STATION: CH 12+400 | CAMBER: -2.5%</span>
+
+          <!-- Quantity Card 2: Granular Quantity -->
+          <div class="data-card card-quantity card-granular-qty">
+            <div class="qty-accent-bar granular"></div>
+            <div class="card-body">
+              <div class="qty-header-row">
+                <div>
+                  <span class="card-category">BASE &amp; SUBBASE VOLUME</span>
+                  <h5 class="card-title">Granular Quantity</h5>
+                </div>
+                <div class="qty-icon-box gran-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="metric-display large">
+                <span class="metric-value font-mono" id="granularVolume">1,750.00</span>
+                <span class="metric-unit">m&sup3;</span>
+              </div>
+
+              <div class="formula-breakdown font-mono" id="granularFormulaBox">
+                Formula: 1.0 km &times; 1000 &times; 7.0 m &times; (250 mm / 1000) = 1,750.00 m&sup3;
+              </div>
+
+              <div class="quantities-meta-grid">
+                <div class="meta-stat-pill">
+                  <span class="stat-lbl">Estimated Tonnage</span>
+                  <span class="stat-val font-mono" id="granularTonnage">3,675.0 MT</span>
+                  <span class="stat-sub">&rho; &approx; 2.10 t/m&sup3;</span>
+                </div>
+                <div class="meta-stat-pill">
+                  <span class="stat-lbl">Truck Loads</span>
+                  <span class="stat-val font-mono" id="granularTrucks">&approx; 184 Tippers</span>
+                  <span class="stat-sub">@ 20 MT / dumper</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="cad-canvas-box">
-          <!-- Drafting Blueprint Canvas -->
-          <svg id="crossSectionSvg" class="cad-svg-blueprint" viewBox="0 0 900 360" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <!-- Engineering CAD Grid Pattern -->
-              <pattern id="cadGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <rect width="20" height="20" fill="#0B111A"/>
-                <line x1="0" y1="0" x2="20" y2="0" stroke="#1E293B" stroke-width="0.7"/>
-                <line x1="0" y1="0" x2="0" y2="20" stroke="#1E293B" stroke-width="0.7"/>
-              </pattern>
-
-              <!-- Layer 1 Hatch: Fine Bituminous Texture -->
-              <pattern id="bitHatch" width="16" height="16" patternUnits="userSpaceOnUse">
-                <rect width="16" height="16" fill="#182234"/>
-                <circle cx="3" cy="3" r="1.2" fill="#334155"/>
-                <circle cx="11" cy="5" r="1" fill="#475569"/>
-                <circle cx="7" cy="12" r="1.4" fill="#334155"/>
-                <circle cx="13" cy="13" r="0.9" fill="#64748B"/>
-              </pattern>
-
-              <!-- Layer 2 Hatch: Angular Crushed Stone Pattern -->
-              <pattern id="granHatch" width="24" height="24" patternUnits="userSpaceOnUse">
-                <rect width="24" height="24" fill="#1E293B"/>
-                <polygon points="3,3 7,7 2,10" fill="#475569"/>
-                <polygon points="13,13 18,15 15,20" fill="#334155"/>
-                <polygon points="12,3 17,2 15,8" fill="#64748B"/>
-                <polygon points="3,15 8,18 4,21" fill="#475569"/>
-              </pattern>
-
-              <!-- Layer 3 Hatch: 45 Degree Soil Compacted Hatch -->
-              <pattern id="subHatch" width="20" height="20" patternUnits="userSpaceOnUse">
-                <rect width="20" height="20" fill="#131B28"/>
-                <path d="M0,20 l20,-20 M-5,5 l10,-10 M15,25 l10,-10" stroke="#2B3A4F" stroke-width="1.2"/>
-              </pattern>
-
-              <!-- Boussinesq Stress Bulb Gradient -->
-              <radialGradient id="cadStressBulb" cx="50%" cy="0%" r="85%">
-                <stop offset="0%" stop-color="#EA580C" stop-opacity="0.3"/>
-                <stop offset="50%" stop-color="#0284C7" stop-opacity="0.12"/>
-                <stop offset="100%" stop-color="#0284C7" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-
-            <!-- Background Drafting Grid -->
-            <rect width="900" height="360" fill="url(#cadGrid)"/>
-
-            <!-- Centerline (CL) Axis Marker -->
-            <line x1="450" y1="20" x2="450" y2="340" stroke="#64748B" stroke-width="1.2" stroke-dasharray="6 3 2 3"/>
-            <text x="450" y="16" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" text-anchor="middle">℄ ROADWAY CENTERLINE</text>
-
-            <!-- Dual Wheel Axle Mechanical Loading (Top) -->
-            <g id="dualWheelGroup">
-              <!-- Left Dual Tire Contact -->
-              <rect x="375" y="32" width="46" height="28" rx="2" fill="#0F172A" stroke="#EA580C" stroke-width="1.5"/>
-              <!-- Right Dual Tire Contact -->
-              <rect x="479" y="32" width="46" height="28" rx="2" fill="#0F172A" stroke="#EA580C" stroke-width="1.5"/>
-              <!-- Axle Bar -->
-              <line x1="398" y1="24" x2="502" y2="24" stroke="#64748B" stroke-width="2"/>
-              <!-- Contact Load Vectors -->
-              <path d="M398 12V24M394 20L398 24L402 20" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/>
-              <path d="M502 12V24M498 20L502 24L506 20" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/>
-              <text x="450" y="30" fill="#EA580C" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" text-anchor="middle">P = 40 kN (0.56 MPa)</text>
-            </g>
-
-            <!-- Boussinesq 45-Degree Stress Dispersion Envelope -->
-            <polygon id="stressDispersionEnvelope" points="360,60 210,340 690,340 540,60" fill="url(#cadStressBulb)"/>
-            <line x1="360" y1="60" x2="210" y2="340" stroke="#0284C7" stroke-width="1" stroke-dasharray="3 3"/>
-            <line x1="540" y1="60" x2="690" y2="340" stroke="#0284C7" stroke-width="1" stroke-dasharray="3 3"/>
-            <text x="630" y="240" fill="#0284C7" font-family="'JetBrains Mono', monospace" font-size="9">θ ≈ 45° STRESS CONE</text>
-
-            <!-- Layer 1: Bituminous Surface Course -->
-            <g id="cadLayer1Group">
-              <rect id="svgBitLayer" x="150" y="60" width="600" height="65" fill="url(#bitHatch)" stroke="#0284C7" stroke-width="1.5"/>
-              <text id="svgBitLabel" x="165" y="94" fill="#F8FAFC" font-family="'Inter', sans-serif" font-size="11" font-weight="600">
-                LAYER 1: BITUMINOUS COURSES (BC + DBM) &bull; <tspan id="svgBitThickText" fill="#0284C7" font-family="'JetBrains Mono', monospace">150 mm</tspan> &bull; <tspan id="svgBitModText" fill="#94A3B8" font-family="'JetBrains Mono', monospace">E₁ = 3,000 MPa</tspan>
-              </text>
-              <!-- Critical Tensile Strain Vector Arrow at Bottom of Bituminous -->
-              <line id="svgTsLine" x1="360" y1="125" x2="540" y2="125" stroke="#EA580C" stroke-width="2.5" stroke-dasharray="5 2"/>
-              <polygon points="356,125 364,121 364,129" fill="#EA580C"/>
-              <polygon points="544,125 536,121 536,129" fill="#EA580C"/>
-              <text id="svgTsVectorLabel" x="450" y="120" fill="#EA580C" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" text-anchor="middle">
-                CRITICAL TENSILE STRAIN (εt) &bull; BOTTOM-UP FATIGUE
-              </text>
-            </g>
-
-            <!-- Layer 2: Granular Base Course -->
-            <g id="cadLayer2Group">
-              <rect id="svgGranLayer" x="150" y="125" width="600" height="95" fill="url(#granHatch)" stroke="#475569" stroke-width="1.5"/>
-              <text id="svgGranLabel" x="165" y="172" fill="#F8FAFC" font-family="'Inter', sans-serif" font-size="11" font-weight="600">
-                LAYER 2: UNBOUND GRANULAR BASE (WMM + GSB) &bull; <tspan id="svgGranThickText" fill="#0284C7" font-family="'JetBrains Mono', monospace">250 mm</tspan> &bull; <tspan id="svgGranModText" fill="#94A3B8" font-family="'JetBrains Mono', monospace">E₂ = 250 MPa</tspan>
-              </text>
-            </g>
-
-            <!-- Layer 3: Soil Subgrade Medium -->
-            <g id="cadLayer3Group">
-              <rect id="svgSubLayer" x="150" y="220" width="600" height="120" fill="url(#subHatch)" stroke="#334155" stroke-width="1.5"/>
-              <text id="svgSubLabel" x="165" y="265" fill="#F8FAFC" font-family="'Inter', sans-serif" font-size="11" font-weight="600">
-                LAYER 3: PREPARED SUBGRADE SOIL MEDIUM &bull; <tspan id="svgSubModText" fill="#0284C7" font-family="'JetBrains Mono', monospace">E₃ = 50 MPa</tspan> &bull; SEMI-INFINITE CONTINUUM
-              </text>
-              <!-- Critical Compressive Strain Vector Arrow at Subgrade Top -->
-              <path d="M450 220 V252 M446 246 L450 252 L454 246" stroke="#0284C7" stroke-width="2.5" stroke-linecap="round"/>
-              <text id="svgCsVectorLabel" x="462" y="242" fill="#0284C7" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700">
-                CRITICAL COMPRESSIVE STRAIN (εv) &bull; SUBGRADE RUTTING
-              </text>
-            </g>
-
-            <!-- CAD Architectural Dimensioning Bracket (Left Side) -->
-            <g id="cadDimensionBracket">
-              <line x1="120" y1="60" x2="120" y2="220" stroke="#94A3B8" stroke-width="1.2"/>
-              <!-- Architectural Ticks (45 degree slash marks) -->
-              <line x1="114" y1="64" x2="126" y2="56" stroke="#94A3B8" stroke-width="1.5"/>
-              <line x1="114" y1="224" x2="126" y2="216" stroke="#94A3B8" stroke-width="1.5"/>
-              <!-- Dimension Callout Text -->
-              <text x="108" y="145" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" text-anchor="middle" transform="rotate(-90 108 145)">
-                TOTAL DEPTH = <tspan id="svgTotalDepth">400 mm</tspan>
-              </text>
-            </g>
-          </svg>
-        </div>
-
-        <!-- CAD Legend Footer Bar -->
-        <div class="cad-legend-bar font-mono">
-          <div class="legend-cell">
-            <span class="legend-swatch bit-swatch"></span>
-            <span>Bituminous BC/DBM Course</span>
-          </div>
-          <div class="legend-cell">
-            <span class="legend-swatch gran-swatch"></span>
-            <span>Crushed Stone Base &amp; Subbase</span>
-          </div>
-          <div class="legend-cell">
-            <span class="legend-swatch sub-swatch"></span>
-            <span>Compacted Native Subgrade</span>
-          </div>
-          <div class="legend-cell">
-            <span class="legend-swatch cone-swatch"></span>
-            <span>Boussinesq Dispersion Cone</span>
-          </div>
         </div>
       </div>
 
-      <!-- 4. TECHNICAL KERNEL METADATA FOOTER (Enterprise Architecture Note) -->
-      <footer class="cad-meta-footer">
-        <div class="meta-footer-header">
-          <span class="meta-title font-mono">MECHANISTIC-EMPIRICAL KERNEL SPECIFICATIONS</span>
-          <span class="meta-status font-mono">ENGINEERING SUITE BUILD: 2026.10-PRO</span>
+      <!-- Part C: Dynamic 3-Layer Cross-Section Visualization & Stress Distribution -->
+      <div class="dashboard-section">
+        <div class="section-badge-header">
+          <h4 class="section-title">
+            <span class="title-accent-bar"></span>
+            3-LAYER STRUCTURAL CROSS-SECTION DIAGRAM
+          </h4>
+          <span class="section-subtitle">Real-time geometric rendering with strain vectors &bull; Dynamically scaled to input thickness</span>
         </div>
-        <div class="meta-footer-grid font-mono">
-          <div class="meta-grid-cell">
-            <span class="cell-head">SURROGATE REGRESSION KERNEL</span>
-            <span class="cell-val">Multi-Output Random Forest (150 Estimators, Max Depth 18)</span>
+
+        <div class="cross-section-card">
+          <!-- Interactive Canvas / SVG Container -->
+          <div class="cross-section-visual-wrap">
+            <svg id="crossSectionSvg" class="cross-section-svg" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <!-- Asphalt texture pattern -->
+                <pattern id="asphaltPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <rect width="20" height="20" fill="#1e293b"/>
+                  <circle cx="4" cy="4" r="1.5" fill="#334155"/>
+                  <circle cx="14" cy="6" r="1.2" fill="#475569"/>
+                  <circle cx="8" cy="15" r="1.8" fill="#334155"/>
+                  <circle cx="16" cy="16" r="1" fill="#64748b"/>
+                </pattern>
+                <!-- Granular stone pattern -->
+                <pattern id="granularPattern" width="24" height="24" patternUnits="userSpaceOnUse">
+                  <rect width="24" height="24" fill="#334155"/>
+                  <polygon points="4,2 8,6 3,9" fill="#64748b"/>
+                  <polygon points="14,14 19,16 16,21" fill="#475569"/>
+                  <polygon points="12,3 18,2 16,8" fill="#94a3b8"/>
+                  <polygon points="2,16 7,19 4,22" fill="#64748b"/>
+                </pattern>
+                <!-- Subgrade hatch pattern -->
+                <pattern id="subgradePattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <rect width="20" height="20" fill="#0f172a"/>
+                  <path d="M0,20 l20,-20 M-5,5 l10,-10 M15,25 l10,-10" stroke="#334155" stroke-width="1.5"/>
+                  <circle cx="10" cy="10" r="1" fill="#64748b"/>
+                </pattern>
+                <!-- Stress bulb gradient -->
+                <radialGradient id="stressBulbGrad" cx="50%" cy="0%" r="90%">
+                  <stop offset="0%" stop-color="#f97316" stop-opacity="0.45"/>
+                  <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Axle Load Graphic (Top) -->
+              <g id="wheelLoadGroup">
+                <!-- Dual Wheel Tires -->
+                <rect x="330" y="22" width="45" height="38" rx="6" fill="#090d16" stroke="#f97316" stroke-width="2"/>
+                <rect x="425" y="22" width="45" height="38" rx="6" fill="#090d16" stroke="#f97316" stroke-width="2"/>
+                <!-- Wheel rims -->
+                <line x1="335" y1="41" x2="370" y2="41" stroke="#475569" stroke-width="2"/>
+                <line x1="430" y1="41" x2="465" y2="41" stroke="#475569" stroke-width="2"/>
+                <!-- Axle bar -->
+                <rect x="350" y="14" width="100" height="8" rx="2" fill="#64748b"/>
+                <!-- Load Force Arrows -->
+                <path d="M352 2V12M352 12L348 8M352 12L356 8" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M448 2V12M448 12L444 8M448 12L452 8" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+                <text x="400" y="10" text-anchor="middle" fill="#f97316" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">DUAL WHEEL LOAD (40 kN)</text>
+              </g>
+
+              <!-- Stress Bulb Dispersion Envelope -->
+              <path id="stressCone" d="M320 60 L180 370 L620 370 L480 60 Z" fill="url(#stressBulbGrad)" />
+
+              <!-- Layer 1: Bituminous Layer -->
+              <g id="bituminousLayerGroup">
+                <rect id="svgBitLayer" x="120" y="60" width="560" height="70" fill="url(#asphaltPattern)" stroke="#38bdf8" stroke-width="1.5" rx="3"/>
+                <text id="svgBitLabel" x="140" y="98" fill="#f8fafc" font-family="'Inter', sans-serif" font-size="13" font-weight="600">
+                  BITUMINOUS LAYER (BC + DBM) &bull; <tspan id="svgBitThickText" fill="#38bdf8" font-family="'JetBrains Mono', monospace">150 mm</tspan> &bull; <tspan id="svgBitModText" fill="#94a3b8" font-family="'JetBrains Mono', monospace">E₁ = 3000 MPa</tspan>
+                </text>
+                <!-- Tensile Strain Vector Line & Marker at bottom of bituminous -->
+                <line id="svgTsLine" x1="310" y1="130" x2="490" y2="130" stroke="#f97316" stroke-width="3" stroke-dasharray="4 2"/>
+                <circle cx="310" cy="130" r="3.5" fill="#f97316"/>
+                <circle cx="490" cy="130" r="3.5" fill="#f97316"/>
+                <text id="svgTsVectorLabel" x="400" y="125" text-anchor="middle" fill="#fb923c" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">
+                  Critical &epsilon;t (Tensile Strain) &bull; Bottom-up Fatigue
+                </text>
+              </g>
+
+              <!-- Layer 2: Granular Layer -->
+              <g id="granularLayerGroup">
+                <rect id="svgGranLayer" x="120" y="130" width="560" height="110" fill="url(#granularPattern)" stroke="#64748b" stroke-width="1.5" rx="3"/>
+                <text id="svgGranLabel" x="140" y="185" fill="#f8fafc" font-family="'Inter', sans-serif" font-size="13" font-weight="600">
+                  GRANULAR BASE &amp; SUBBASE (WMM + GSB) &bull; <tspan id="svgGranThickText" fill="#38bdf8" font-family="'JetBrains Mono', monospace">250 mm</tspan> &bull; <tspan id="svgGranModText" fill="#94a3b8" font-family="'JetBrains Mono', monospace">E₂ = 250 MPa</tspan>
+                </text>
+              </g>
+
+              <!-- Layer 3: Soil Subgrade -->
+              <g id="subgradeLayerGroup">
+                <rect id="svgSubLayer" x="120" y="240" width="560" height="130" fill="url(#subgradePattern)" stroke="#475569" stroke-width="1.5" rx="3"/>
+                <text id="svgSubLabel" x="140" y="295" fill="#f8fafc" font-family="'Inter', sans-serif" font-size="13" font-weight="600">
+                  COMPACTED SOIL SUBGRADE &bull; <tspan id="svgSubModText" fill="#38bdf8" font-family="'JetBrains Mono', monospace">E₃ = 50 MPa</tspan> &bull; Semi-Infinite
+                </text>
+                <!-- Compressive Strain Vector Line at top of subgrade -->
+                <path d="M400 240 V270 M396 265 L400 270 L404 265" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                <text id="svgCsVectorLabel" x="415" y="260" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">
+                  Critical &epsilon;v (Compressive Strain) &bull; Subgrade Rutting
+                </text>
+              </g>
+
+              <!-- Left Dimension Scale Bracket -->
+              <g id="dimensionBracketGroup">
+                <line x1="100" y1="60" x2="100" y2="240" stroke="#94a3b8" stroke-width="1.5"/>
+                <line x1="94" y1="60" x2="106" y2="60" stroke="#94a3b8" stroke-width="1.5"/>
+                <line x1="94" y1="240" x2="106" y2="240" stroke="#94a3b8" stroke-width="1.5"/>
+                <text x="86" y="155" text-anchor="middle" transform="rotate(-90 86 155)" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="11">
+                  Pavement Depth = <tspan id="svgTotalDepth">400 mm</tspan>
+                </text>
+              </g>
+            </svg>
           </div>
-          <div class="meta-grid-cell">
-            <span class="cell-head">SURROGATE CORRELATION</span>
-            <span class="cell-val">Tensile Strain R² = 0.994 | Compressive Strain R² = 0.991</span>
+
+          <!-- Cross section legends & quick tags -->
+          <div class="cross-section-legend-row">
+            <div class="legend-item">
+              <span class="legend-color legend-bit"></span>
+              <span class="legend-text">Bituminous Surface &amp; Binder</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color legend-gran"></span>
+              <span class="legend-text">Unbound Granular Base &amp; Subbase</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color legend-sub"></span>
+              <span class="legend-text">Subgrade Soil Medium</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color legend-cone"></span>
+              <span class="legend-text">Boussinesq / Burmister Stress Cone</span>
+            </div>
           </div>
-          <div class="meta-grid-cell">
-            <span class="cell-head">VALIDATION BASELINE</span>
-            <span class="cell-val">Linear Elastic Continuum Boundary Value Solvers (KENLAYER / IITPAVE)</span>
+        </div>
+      </div>
+
+      <!-- Part 5: Technical Context / Model Architecture Section -->
+      <footer class="technical-context-section">
+        <div class="tech-card">
+          <div class="tech-card-header">
+            <div class="tech-badge">MACHINE LEARNING SURROGATE ARCHITECTURE</div>
+            <h4 class="tech-title">Multi-Output Random Forest Regressor Pipeline</h4>
           </div>
-          <div class="meta-grid-cell">
-            <span class="cell-head">REGULATORY FRAMEWORK</span>
-            <span class="cell-val">IRC:37-2018 (Guidelines for Design of Flexible Pavements)</span>
+          <div class="tech-card-body">
+            <p class="tech-description">
+              The backend utilizes an optimized <strong>Multi-Output Random Forest Regressor</strong> trained on extensive synthetic datasets generated from linear elastic multi-layer continuum solvers (KENLAYER &amp; IITPAVE). Instead of iteratively solving high-order partial differential boundary value equations, the ensemble surrogate dynamically interpolates complex, non-linear structural constraints in <strong>&lt; 4 milliseconds</strong> with high fidelity ($R^2 &gt; 0.99$).
+            </p>
+            
+            <div class="tech-grid">
+              <div class="tech-stat-cell">
+                <span class="t-cell-title">SURROGATE MODEL</span>
+                <span class="t-cell-desc">Multi-Output Random Forest (150 Estimators, Depth 18)</span>
+              </div>
+              <div class="tech-stat-cell">
+                <span class="t-cell-title">FAILURE CRITERIA</span>
+                <span class="t-cell-desc">IRC:37-2018 (80% &amp; 90% Reliability Equations)</span>
+              </div>
+              <div class="tech-stat-cell">
+                <span class="t-cell-title">OUTPUT LABELS</span>
+                <span class="t-cell-desc">Tensile Strain (&epsilon;<sub>t</sub>), Compressive Strain (&epsilon;<sub>v</sub>), N<sub>f</sub>, N<sub>r</sub></span>
+              </div>
+              <div class="tech-stat-cell">
+                <span class="t-cell-title">CALCULATION RUNTIME</span>
+                <span class="t-cell-desc">Instantaneous In-Browser Execution &bull; Client-Side Ready</span>
+              </div>
+            </div>
+          </div>
+          <div class="tech-footer-bar">
+            <span>Engineering Model ID: <code>RF-PAVE-V2.4-MEPDG</code></span>
+            <span>Civil Engineering AI Dashboard &bull; Ready for Field Deployment</span>
           </div>
         </div>
       </footer>
 
     </section>
   </main>
-
-  <!-- Modal 1: Project Configuration Modal -->
-  <dialog id="projectConfigDialog" class="cad-dialog">
-    <div class="dialog-header">
-      <span class="dialog-title font-mono">PROJECT CONFIGURATION &amp; ENVIRONMENT</span>
-      <button type="button" class="dialog-close-btn" id="closeConfigDialog">&times;</button>
-    </div>
-    <div class="dialog-body">
-      <div class="dialog-field-row">
-        <label for="cfgProjectName">Project Section Name</label>
-        <input type="text" id="cfgProjectName" value="NH-48 Expressway Corridor (Package-04)" class="cad-input font-mono">
-      </div>
-      <div class="dialog-field-row">
-        <label for="cfgStationing">Chainage Stationing</label>
-        <input type="text" id="cfgStationing" value="Ch 12+400 to Ch 13+400" class="cad-input font-mono">
-      </div>
-      <div class="dialog-grid-2">
-        <div class="dialog-field-row">
-          <label for="cfgDesignLife">Design Life (Years)</label>
-          <input type="number" id="cfgDesignLife" value="20" class="cad-input font-mono">
-        </div>
-        <div class="dialog-field-row">
-          <label for="cfgReliability">Reliability Level (%)</label>
-          <select id="cfgReliability" class="cad-select font-mono">
-            <option value="90" selected>90% (National Highway / Expressway)</option>
-            <option value="80">80% (State Highway / Major District Road)</option>
-          </select>
-        </div>
-      </div>
-      <div class="dialog-field-row">
-        <label for="cfgPavementTemp">Mean Annual Pavement Temp (MAPT)</label>
-        <div class="input-with-unit">
-          <input type="number" id="cfgPavementTemp" value="35" class="cad-input font-mono">
-          <span class="input-unit">°C</span>
-        </div>
-      </div>
-    </div>
-    <div class="dialog-footer">
-      <button type="button" class="btn-tb" id="cancelConfigBtn">Cancel</button>
-      <button type="button" class="btn-tb btn-tb-primary" id="saveConfigBtn">Save Configuration</button>
-    </div>
-  </dialog>
-
-  <!-- Modal 2: Import DXF / XLSX Modal -->
-  <dialog id="importDialog" class="cad-dialog">
-    <div class="dialog-header">
-      <span class="dialog-title font-mono">IMPORT ROADWAY SECTION DATA (.DXF / .XLSX / .CSV)</span>
-      <button type="button" class="dialog-close-btn" id="closeImportDialog">&times;</button>
-    </div>
-    <div class="dialog-body">
-      <p class="dialog-desc">Select an engineering corridor profile or chainage spreadsheet to load alignment and layer thickness bounds:</p>
-      <div class="dropzone-box" id="dropzoneBox">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.5">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="17 8 12 3 7 8"></polyline>
-          <line x1="12" y1="3" x2="12" y2="15"></line>
-        </svg>
-        <span class="dropzone-text">Drag &amp; drop .DXF alignment or .CSV chainage table here</span>
-        <label class="btn-tb" for="fileInputElem" style="cursor: pointer;">Browse Local Files</label>
-        <input type="file" id="fileInputElem" accept=".dxf,.csv,.xlsx,.json" style="display: none;">
-      </div>
-    </div>
-    <div class="dialog-footer">
-      <button type="button" class="btn-tb" id="cancelImportBtn">Close</button>
-    </div>
-  </dialog>
-
-  <!-- Modal 3: Audit Log Modal -->
-  <dialog id="auditLogDialog" class="cad-dialog">
-    <div class="dialog-header">
-      <span class="dialog-title font-mono">KERNEL AUDIT &amp; COMPUTATION LOG</span>
-      <button type="button" class="dialog-close-btn" id="closeAuditDialog">&times;</button>
-    </div>
-    <div class="dialog-body">
-      <div class="audit-log-terminal font-mono" id="auditTerminal">
-        [INIT] PAVEAISTRUCT Continuum Kernel v2.4 initialized.<br>
-        [MODEL] Multi-Output Random Forest weights loaded (150 estimators, depth 18).<br>
-        [STANDARDS] Calibrated to IRC:37-2018 fatigue &amp; rutting transfer functions.<br>
-        [READY] Input listener active on 40 kN dual-wheel axle spectrum.<br>
-      </div>
-    </div>
-    <div class="dialog-footer">
-      <button type="button" class="btn-tb" id="clearAuditBtn">Clear Log</button>
-      <button type="button" class="btn-tb" id="closeAuditBtn">Close</button>
-    </div>
-  </dialog>
 
   <!-- Notification Toast for interactive feedback -->
   <div id="toast" class="toast-notification" role="alert" aria-live="assertive">
@@ -816,6 +751,6 @@
   <!-- PDF Engine & Application Scripts -->
   <script src="jspdf.umd.min.js"></script>
   <script src="jspdf.plugin.autotable.min.js"></script>
-  <script src="app.js?v=3.0"></script>
+  <script src="app.js?v=4.0"></script>
 </body>
 </html>

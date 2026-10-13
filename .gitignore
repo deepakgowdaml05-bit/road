@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+reports/*.pdf
+!reports/.gitkeep
+gcm-diagnose.log
