@@ -69,6 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const overallStatusText = document.getElementById('overallStatusText');
   const lastUpdated = document.getElementById('lastUpdated');
 
+  // Construction Cost Displays
+  const totalCostInr = document.getElementById('totalCostInr');
+  const totalCostUsd = document.getElementById('totalCostUsd');
+  const costPerKm = document.getElementById('costPerKm');
+  const costPerSqm = document.getElementById('costPerSqm');
+  const costBituminous = document.getElementById('costBituminous');
+  const costBituminousUsd = document.getElementById('costBituminousUsd');
+  const costGranular = document.getElementById('costGranular');
+  const costGranularUsd = document.getElementById('costGranularUsd');
+  const costSubgrade = document.getElementById('costSubgrade');
+  const costSubgradeUsd = document.getElementById('costSubgradeUsd');
+  const costTopPill = document.getElementById('costTopPill');
+  const costTopText = document.getElementById('costTopText');
+
   // SVG Cross-Section Elements
   const svgBitLayer = document.getElementById('svgBitLayer');
   const svgGranLayer = document.getElementById('svgGranLayer');
@@ -418,6 +432,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (bituminousTrucks) bituminousTrucks.textContent = `≈ ${bTrucks} Tippers`;
     if (granularTrucks) granularTrucks.textContent = `≈ ${gTrucks} Tippers`;
+
+    // --- Estimated Construction Cost Calculations (MoRTH / CPWD Benchmarks) ---
+    const rateBit = 7200;  // ₹7,200 / m³ for BC + DBM
+    const rateGran = 1850; // ₹1,850 / m³ for WMM + GSB
+    const rateSub = 240;   // ₹240 / m² for Subgrade rolling & formation
+    const inrToUsd = 83.0; // Conversion benchmark
+
+    const carriagewayArea = len * 1000 * wid;
+    const cBit = bVol * rateBit;
+    const cGran = gVol * rateGran;
+    const cSub = carriagewayArea * rateSub;
+    const cTotal = cBit + cGran + cSub;
+
+    const cTotalCrores = (cTotal / 1e7).toFixed(2);
+    const cTotalUsd = Math.round(cTotal / inrToUsd);
+    const cPerKmCrores = ((cTotal / len) / 1e7).toFixed(2);
+    const cPerSqm = Math.round(cTotal / carriagewayArea);
+
+    if (totalCostInr) totalCostInr.textContent = cTotalCrores;
+    if (totalCostUsd) totalCostUsd.textContent = `≈ $${cTotalUsd.toLocaleString()} USD`;
+    if (costPerKm) costPerKm.textContent = `₹${cPerKmCrores} Cr / km`;
+    if (costPerSqm) costPerSqm.textContent = `₹${cPerSqm.toLocaleString()} / m²`;
+
+    if (costBituminous) costBituminous.textContent = `₹${(cBit / 1e5).toFixed(2)} Lakhs`;
+    if (costBituminousUsd) costBituminousUsd.textContent = `$${Math.round(cBit / inrToUsd).toLocaleString()} USD • ${bVol.toFixed(0)} m³`;
+
+    if (costGranular) costGranular.textContent = `₹${(cGran / 1e5).toFixed(2)} Lakhs`;
+    if (costGranularUsd) costGranularUsd.textContent = `$${Math.round(cGran / inrToUsd).toLocaleString()} USD • ${gVol.toFixed(0)} m³`;
+
+    if (costSubgrade) costSubgrade.textContent = `₹${(cSub / 1e5).toFixed(2)} Lakhs`;
+    if (costSubgradeUsd) costSubgradeUsd.textContent = `$${Math.round(cSub / inrToUsd).toLocaleString()} USD • ${carriagewayArea.toFixed(0)} m²`;
+
+    if (costTopText) costTopText.textContent = `EST. COST: ₹${cTotalCrores} Cr ($${Math.round(cTotalUsd / 1000)}K)`;
   }
 
   function updateCrossSectionSvg(h1, e1, h2, e2, e3, ts) {
@@ -531,6 +578,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const bTrucks = Math.ceil(bTons / 20);
     const gTrucks = Math.ceil(gTons / 20);
 
+    // Cost Estimations (MoRTH Schedule of Rates)
+    const rateBit = 7200;
+    const rateGran = 1850;
+    const rateSub = 240;
+    const inrToUsd = 83.0;
+
+    const cBit = bVol * rateBit;
+    const cGran = gVol * rateGran;
+    const cSub = area * rateSub;
+    const cTotal = cBit + cGran + cSub;
+    const cTotalCrores = (cTotal / 1e7).toFixed(2);
+    const cTotalUsd = Math.round(cTotal / inrToUsd);
+
     // CBR estimate string (clean ASCII)
     const cbrStr = e3 <= 50 ? (e3 / 10).toFixed(1) : Math.pow(e3 / 17.6, 1 / 0.64).toFixed(1);
 
@@ -601,47 +661,146 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
+    doc.setFontSize(7.8);
     doc.setTextColor(100, 116, 139);
-    doc.text(`Standard Traffic: ${traffic.toFixed(1)} MSA  |  Corridor Footprint: ${area.toLocaleString()} m2`, 118, 33);
+    doc.text(`Est. Cost: Rs ${cTotalCrores} Cr ($${cTotalUsd.toLocaleString()})  |  Traffic: ${traffic.toFixed(1)} MSA  |  Footprint: ${area.toLocaleString()} m2`, 116, 33);
 
     // ==========================================
-    // 3. Section 1: Structural Layer Architecture & Inputs
+    // 3. Section 1: Structural Layer Architecture & 2D Cross-Section (Side-by-Side)
     // ==========================================
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     doc.setTextColor(15, 23, 42);
-    doc.text('1. STRUCTURAL LAYER ARCHITECTURE & DESIGN INPUTS', 12, 40);
+    doc.text('1. STRUCTURAL LAYER ARCHITECTURE & 2D CROSS-SECTION SCHEMATIC', 12, 40);
 
     const inputRows = [
-      ['Design Traffic Loading', `${traffic.toFixed(1)} MSA`, 'Axle Load: 80 kN Dual Tire (0.56 MPa Contact)', 'IRC:37-2018 Standard Spectrum'],
-      ['Bituminous Layer (Top Course)', `${h1} mm`, `Elastic Modulus E1 = ${e1.toLocaleString()} MPa`, 'Wearing Course (BC) + DBM Course'],
-      ['Granular Layer (Base & Subbase)', `${h2} mm`, `Elastic Modulus E2 = ${e2.toLocaleString()} MPa`, 'Crushed Stone (WMM) + Granular Subbase (GSB)'],
-      ['Compacted Soil Subgrade', 'Semi-Infinite Foundation', `Resilient Modulus Ef = ${e3} MPa`, `Estimated CBR ~ ${cbrStr}% (Native Subgrade)`],
-      ['Road Stretch Geometry', `Length: ${len.toFixed(1)} km`, `Width: ${wid.toFixed(1)} m`, `Carriageway Footprint: ${area.toLocaleString()} m2`]
+      ['Design Traffic Loading', `${traffic.toFixed(1)} MSA`, '80 kN Dual Tire (0.56 MPa)', 'IRC:37 Spectrum'],
+      ['Bituminous Layer (Top)', `${h1} mm`, `E1 = ${e1.toLocaleString()} MPa`, 'BC + DBM Course'],
+      ['Granular Layer (Base)', `${h2} mm`, `E2 = ${e2.toLocaleString()} MPa`, 'WMM + GSB Course'],
+      ['Compacted Soil Subgrade', 'Semi-Infinite', `Ef = ${e3} MPa`, `CBR ~ ${cbrStr}% Native`],
+      ['Road Corridor Geometry', `${len.toFixed(1)} km × ${wid.toFixed(1)} m`, `Area: ${area.toLocaleString()} m2`, 'Carriageway Footprint']
     ];
 
+    // Left Side: Table 1 (Width: 108mm)
     doc.autoTable({
       startY: 42.5,
-      margin: { left: 12, right: 12 },
-      head: [['Component', 'Dimension / Value', 'Mechanical Properties', 'Specification Notes']],
+      margin: { left: 12, right: 90 },
+      head: [['Component', 'Dimension', 'Properties', 'Specification Notes']],
       body: inputRows,
       theme: 'grid',
-      headStyles: { fillColor: darkSlate, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.8, cellPadding: 2 },
-      styles: { fontSize: 7.4, cellPadding: 1.8, lineColor: borderGray, lineWidth: 0.2 },
+      headStyles: { fillColor: darkSlate, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.2, cellPadding: 1.8 },
+      styles: { fontSize: 6.9, cellPadding: 1.6, lineColor: borderGray, lineWidth: 0.2 },
       columnStyles: {
-        0: { fontStyle: 'bold', cellWidth: 50 },
-        1: { cellWidth: 36, fontStyle: 'bold' },
-        2: { cellWidth: 50 },
-        3: { cellWidth: 50 }
+        0: { fontStyle: 'bold', cellWidth: 36 },
+        1: { cellWidth: 22, fontStyle: 'bold' },
+        2: { cellWidth: 26 },
+        3: { cellWidth: 24 }
       },
       pageBreak: 'avoid'
     });
 
+    // Right Side: 2D Structural Cross-Section Blueprint Diagram (Width: 74mm, Height: 33mm)
+    const diagX = 124;
+    const diagY = 42.5;
+    const diagW = 74;
+    const diagH = 32.5;
+
+    // Blueprint Container Box
+    doc.setFillColor(11, 17, 32);
+    doc.setDrawColor(51, 65, 85);
+    doc.setLineWidth(0.35);
+    doc.roundedRect(diagX, diagY, diagW, diagH, 1.5, 1.5, 'FD');
+
+    // Title Tab
+    doc.setFillColor(30, 41, 59);
+    doc.rect(diagX, diagY, diagW, 4.2, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
+    doc.setTextColor(203, 213, 225);
+    doc.text('2D STRUCTURAL CROSS-SECTION & STRAIN VECTORS', diagX + diagW / 2, diagY + 3.1, { align: 'center' });
+
+    // Axle Load Tires
+    const tireY = diagY + 5.5;
+    doc.setFillColor(15, 23, 42);
+    doc.setDrawColor(234, 88, 12);
+    doc.setLineWidth(0.4);
+    doc.rect(diagX + 26, tireY, 7, 3.5, 'FD');
+    doc.rect(diagX + 41, tireY, 7, 3.5, 'FD');
+
+    doc.setFontSize(5.4);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(234, 88, 12);
+    doc.text('40 kN DUAL WHEEL', diagX + 37, tireY - 0.4, { align: 'center' });
+
+    // Layer 1: Bituminous Course
+    const layX = diagX + 8;
+    const layW = diagW - 12;
+    const lay1Y = tireY + 3.5;
+    const lay1H = 6.5;
+    doc.setFillColor(30, 41, 59);
+    doc.setDrawColor(56, 189, 248);
+    doc.setLineWidth(0.3);
+    doc.rect(layX, lay1Y, layW, lay1H, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(5.8);
+    doc.setTextColor(248, 250, 252);
+    doc.text(`BITUMINOUS COURSE - ${h1} mm | E1 = ${e1} MPa`, layX + layW / 2, lay1Y + 3.8, { align: 'center' });
+
+    // Tensile Strain Vector Line at bottom of Bituminous
+    doc.setDrawColor(234, 88, 12);
+    doc.setLineWidth(0.35);
+    doc.line(layX + 6, lay1Y + lay1H, layX + layW - 6, lay1Y + lay1H);
+    doc.setFontSize(5.2);
+    doc.setTextColor(234, 88, 12);
+    doc.text(`Critical et = ${ts.toFixed(1)} microstrain (Fatigue)`, layX + layW / 2, lay1Y + lay1H - 0.7, { align: 'center' });
+
+    // Layer 2: Granular Base/Subbase
+    const lay2Y = lay1Y + lay1H;
+    const lay2H = 7.5;
+    doc.setFillColor(51, 65, 85);
+    doc.setDrawColor(100, 116, 139);
+    doc.setLineWidth(0.25);
+    doc.rect(layX, lay2Y, layW, lay2H, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(5.8);
+    doc.setTextColor(248, 250, 252);
+    doc.text(`GRANULAR BASE (WMM+GSB) - ${h2} mm | E2 = ${e2} MPa`, layX + layW / 2, lay2Y + 4.5, { align: 'center' });
+
+    // Layer 3: Subgrade Foundation
+    const lay3Y = lay2Y + lay2H;
+    const lay3H = 5.2;
+    doc.setFillColor(15, 23, 42);
+    doc.setDrawColor(71, 85, 105);
+    doc.rect(layX, lay3Y, layW, lay3H, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(5.6);
+    doc.setTextColor(203, 213, 225);
+    doc.text(`SUBGRADE FOUNDATION | Ef = ${e3} MPa (CBR ~${cbrStr}%)`, layX + layW / 2, lay3Y + 3.4, { align: 'center' });
+
+    // Compressive Strain Arrow & Label
+    doc.setDrawColor(56, 189, 248);
+    doc.line(diagX + 37, lay3Y, diagX + 37, lay3Y + 3.2);
+    doc.setFontSize(5.0);
+    doc.setTextColor(56, 189, 248);
+    doc.text(`Critical ev = ${cs.toFixed(1)} microstrain`, diagX + 37, lay3Y - 0.5, { align: 'center' });
+
+    // Total Depth Dimension Bracket
+    doc.setDrawColor(148, 163, 184);
+    doc.setLineWidth(0.25);
+    doc.line(layX - 2.5, lay1Y, layX - 2.5, lay2Y + lay2H);
+    doc.line(layX - 4, lay1Y, layX - 1.5, lay1Y);
+    doc.line(layX - 4, lay2Y + lay2H, layX - 1.5, lay2Y + lay2H);
+    doc.setFontSize(5.2);
+    doc.setTextColor(148, 163, 184);
+    doc.text(`${h1 + h2} mm`, layX - 3.2, lay1Y + (lay1H + lay2H) / 2, { angle: 90, align: 'center' });
+
     // ==========================================
     // 4. Section 2: Mechanistic Strain Responses & Failure Criteria
     // ==========================================
-    const sec2Y = doc.lastAutoTable.finalY + 5;
+    const sec2Y = Math.max(doc.lastAutoTable.finalY, diagY + diagH) + 4.5;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     doc.setTextColor(15, 23, 42);
@@ -677,35 +836,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 5. Section 3: Material Quantities & Logistical Estimation (BoQ)
+    // 5. Section 3: Material Quantities & Estimated Construction Cost (BoQ Valuation)
     // ==========================================
-    const sec3Y = doc.lastAutoTable.finalY + 5;
+    const sec3Y = doc.lastAutoTable.finalY + 4.5;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     doc.setTextColor(15, 23, 42);
-    doc.text('3. MATERIAL QUANTITIES & LOGISTICAL ESTIMATION (BoQ)', 12, sec3Y);
+    doc.text('3. MATERIAL QUANTITIES & ESTIMATED CONSTRUCTION COST (BOQ VALUATION)', 12, sec3Y);
 
     const qtyRows = [
-      ['Bituminous Courses (BC + DBM)', 'L (km) * 1000 * W (m) * (h1 / 1000)', `${bVol.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m3`, '2.40 t/m3', `${bTons.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MT`, `~ ${bTrucks} Dumpers (20 MT)`],
-      ['Granular Base & Subbase (WMM + GSB)', 'L (km) * 1000 * W (m) * (h2 / 1000)', `${gVol.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m3`, '2.10 t/m3', `${gTons.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MT`, `~ ${gTrucks} Dumpers (20 MT)`],
-      ['TOTAL STRUCTURAL PAVEMENT', `Total Thickness = ${h1 + h2} mm`, `${(bVol + gVol).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m3`, 'Composite', `${(bTons + gTons).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MT`, `~ ${bTrucks + gTrucks} Total Trips`]
+      ['Bituminous Course (BC + DBM)', `${bVol.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m3 (${bTons.toFixed(0)} MT)`, 'Rs 7,200 / m3', `Rs ${(cBit / 1e5).toFixed(2)} Lakhs`, `$${Math.round(cBit / inrToUsd).toLocaleString()}`, `~ ${bTrucks} Dumpers (20 MT)`],
+      ['Granular Base & Subbase (WMM + GSB)', `${gVol.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m3 (${gTons.toFixed(0)} MT)`, 'Rs 1,850 / m3', `Rs ${(cGran / 1e5).toFixed(2)} Lakhs`, `$${Math.round(cGran / inrToUsd).toLocaleString()}`, `~ ${gTrucks} Dumpers (20 MT)`],
+      ['Subgrade Preparation & Rolling', `${area.toLocaleString()} m2 (Footprint)`, 'Rs 240 / m2', `Rs ${(cSub / 1e5).toFixed(2)} Lakhs`, `$${Math.round(cSub / inrToUsd).toLocaleString()}`, 'Formation Grade'],
+      ['TOTAL ESTIMATED STRUCTURAL COST', `${h1 + h2} mm Depth (${len.toFixed(1)} km)`, 'Composite MoRTH', `Rs ${cTotalCrores} Crores`, `$${cTotalUsd.toLocaleString()}`, `~ ${bTrucks + gTrucks} Total Trips`]
     ];
 
     doc.autoTable({
       startY: sec3Y + 2.5,
       margin: { left: 12, right: 12 },
-      head: [['Material Layer Description', 'Volumetric Formula', 'Volume (m3)', 'Compacted Density', 'Net Mass (MT)', 'Logistics (20 MT Trucks)']],
+      head: [['Material Layer Description', 'Quantity / Area', 'Standard Rate (MoRTH)', 'Subtotal (INR)', 'Subtotal (USD)', 'Logistical Demand']],
       body: qtyRows,
       theme: 'grid',
       headStyles: { fillColor: orangeAccent, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.8, cellPadding: 2 },
       styles: { fontSize: 7.4, cellPadding: 1.8, lineColor: borderGray, lineWidth: 0.2 },
       columnStyles: {
         0: { fontStyle: 'bold', cellWidth: 46 },
-        1: { cellWidth: 48 },
-        2: { cellWidth: 24, fontStyle: 'bold' },
-        3: { cellWidth: 20 },
-        4: { cellWidth: 24, fontStyle: 'bold' },
-        5: { cellWidth: 24 }
+        1: { cellWidth: 42 },
+        2: { cellWidth: 26 },
+        3: { cellWidth: 24, fontStyle: 'bold' },
+        4: { cellWidth: 22, fontStyle: 'bold', textColor: [2, 132, 199] },
+        5: { cellWidth: 26 }
       },
       pageBreak: 'avoid'
     });
@@ -713,49 +873,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 6. Section 4: Engineering Certification & Sign-Off Block
     // ==========================================
-    const signOffY = doc.lastAutoTable.finalY + 6;
+    const signOffY = doc.lastAutoTable.finalY + 5;
     doc.setDrawColor(203, 213, 225);
     doc.setFillColor(248, 250, 252);
-    doc.roundedRect(12, signOffY, 186, 32, 2, 2, 'FD');
+    doc.roundedRect(12, signOffY, 186, 30, 2, 2, 'FD');
 
     // Certification Header & Statement
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8.5);
     doc.setTextColor(15, 23, 42);
-    doc.text('ENGINEERING CERTIFICATION & SIGN-OFF', 16, signOffY + 5.5);
+    doc.text('ENGINEERING CERTIFICATION & SIGN-OFF', 16, signOffY + 5.2);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.2);
+    doc.setFontSize(7.0);
     doc.setTextColor(71, 85, 105);
-    doc.text('I hereby certify that the mechanistic responses and material estimations presented herein have been validated against', 16, signOffY + 10.5);
-    doc.text('IRC:37-2018 standards utilizing the verified Multi-Output Random Forest surrogate continuum formulation.', 16, signOffY + 14.5);
+    doc.text('I hereby certify that the mechanistic responses, material takeoffs, and cost valuations presented herein have been validated against', 16, signOffY + 9.8);
+    doc.text('IRC:37-2018 & MoRTH benchmarks utilizing the verified Multi-Output Random Forest surrogate continuum formulation.', 16, signOffY + 13.5);
 
     // Sign-Off Lines
     doc.setDrawColor(148, 163, 184);
     doc.setLineWidth(0.3);
-    doc.line(16, signOffY + 23, 76, signOffY + 23);
-    doc.line(84, signOffY + 23, 144, signOffY + 23);
+    doc.line(16, signOffY + 22, 76, signOffY + 22);
+    doc.line(84, signOffY + 22, 144, signOffY + 22);
 
-    doc.setFontSize(7);
+    doc.setFontSize(6.8);
     doc.setTextColor(100, 116, 139);
-    doc.text('Prepared By: Pavement Design Engineer', 16, signOffY + 27.5);
-    doc.text('Approved By: Lead Highway Consultant', 84, signOffY + 27.5);
+    doc.text('Prepared By: Pavement Design Engineer', 16, signOffY + 26);
+    doc.text('Approved By: Lead Highway Consultant', 84, signOffY + 26);
 
     // Circular Engineering Stamp Graphic (Right side of box)
     const stampX = 172;
-    const stampY = signOffY + 16;
+    const stampY = signOffY + 15;
     doc.setDrawColor(15, 23, 42);
     doc.setLineWidth(0.6);
-    doc.circle(stampX, stampY, 11, 'S');
+    doc.circle(stampX, stampY, 10.5, 'S');
     doc.setLineWidth(0.3);
-    doc.circle(stampX, stampY, 9.5, 'S');
+    doc.circle(stampX, stampY, 9.0, 'S');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
+    doc.setFontSize(7.2);
     doc.setTextColor(15, 23, 42);
     doc.text('IRC:37', stampX, stampY - 1, { align: 'center' });
-    doc.setFontSize(7);
-    doc.text('VERIFIED', stampX, stampY + 3.5, { align: 'center' });
+    doc.setFontSize(6.8);
+    doc.text('VERIFIED', stampX, stampY + 3.2, { align: 'center' });
 
     // ==========================================
     // 7. Strict Footer & Page 1 Enforcement

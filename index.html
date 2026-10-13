@@ -313,6 +313,11 @@
         
         <!-- Live Status & PDF Export Actions -->
         <div class="results-quick-metrics">
+          <div class="pill-chip pill-chip-cost" id="costTopPill">
+            <span class="cost-dot"></span>
+            <span id="costTopText">EST. COST: ₹1.25 Cr ($150K)</span>
+          </div>
+
           <div class="pill-chip pill-chip-success" id="overallStatusBadge">
             <span class="chip-dot"></span>
             <span id="overallStatusText">DESIGN COMPLIANT (IRC:37)</span>
@@ -567,7 +572,71 @@
         </div>
       </div>
 
-      <!-- Part C: Dynamic 3-Layer Cross-Section Visualization & Stress Distribution -->
+      <!-- Part C: Construction Cost Estimation (BoQ Valuation) -->
+      <div class="dashboard-section">
+        <div class="section-badge-header">
+          <h4 class="section-title">
+            <span class="title-accent-bar green"></span>
+            ESTIMATED CONSTRUCTION COST (BOQ VALUATION)
+          </h4>
+          <span class="section-subtitle">Real-time highway structural valuation based on standard MoRTH &amp; CPWD Schedule of Rates (SoR)</span>
+        </div>
+
+        <div class="cost-summary-card">
+          <div class="cost-overview-header">
+            <div class="cost-main-display">
+              <span class="cost-caption">TOTAL ESTIMATED STRUCTURAL PAVEMENT COST</span>
+              <div class="cost-metric-row">
+                <span class="cost-currency">₹</span>
+                <span class="cost-amount font-mono" id="totalCostInr">1.25</span>
+                <span class="cost-unit">Crores</span>
+                <span class="cost-usd-pill font-mono" id="totalCostUsd">≈ $150,330 USD</span>
+              </div>
+            </div>
+            <div class="cost-metrics-pills">
+              <div class="cost-pill">
+                <span class="cost-pill-lbl">COST PER KM</span>
+                <span class="cost-pill-val font-mono" id="costPerKm">₹1.25 Cr / km</span>
+              </div>
+              <div class="cost-pill">
+                <span class="cost-pill-lbl">COST PER M²</span>
+                <span class="cost-pill-val font-mono" id="costPerSqm">₹1,782 / m²</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cost-breakdown-grid">
+            <div class="cost-item-card">
+              <div class="cost-item-header">
+                <span class="cost-layer-tag tag-bit">LAYER 1 • BITUMINOUS</span>
+                <span class="cost-rate-badge font-mono">@ ₹7,200 / m³</span>
+              </div>
+              <div class="cost-item-amount font-mono" id="costBituminous">₹75.60 Lakhs</div>
+              <div class="cost-item-sub font-mono" id="costBituminousUsd">$91,080 USD • 1,050 m³</div>
+            </div>
+
+            <div class="cost-item-card">
+              <div class="cost-item-header">
+                <span class="cost-layer-tag tag-gran">LAYER 2 • GRANULAR</span>
+                <span class="cost-rate-badge font-mono">@ ₹1,850 / m³</span>
+              </div>
+              <div class="cost-item-amount font-mono" id="costGranular">₹32.38 Lakhs</div>
+              <div class="cost-item-sub font-mono" id="costGranularUsd">$39,010 USD • 1,750 m³</div>
+            </div>
+
+            <div class="cost-item-card">
+              <div class="cost-item-header">
+                <span class="cost-layer-tag tag-sub">LAYER 3 • SUBGRADE PREP</span>
+                <span class="cost-rate-badge font-mono">@ ₹240 / m²</span>
+              </div>
+              <div class="cost-item-amount font-mono" id="costSubgrade">₹16.80 Lakhs</div>
+              <div class="cost-item-sub font-mono" id="costSubgradeUsd">$20,240 USD • 7,000 m²</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part D: Dynamic 3-Layer Cross-Section Visualization & Stress Distribution -->
       <div class="dashboard-section">
         <div class="section-badge-header">
           <h4 class="section-title">
