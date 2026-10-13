@@ -1,0 +1,1184 @@
+/* ==========================================================================
+   PAVEAISTRUCT™ Enterprise Edition - CAD / CAE Theme Stylesheet
+   Target Style: Professional Civil Engineering Software (Bentley / Civil 3D / AASHTOWare)
+   Theme: Matte Charcoal Slate, Precision 1px Borders, Monospace Data, Zero Neon
+   ========================================================================== */
+
+:root {
+  /* Slate & Charcoal Canvas Tokens */
+  --cad-bg-canvas: #0F172A;
+  --cad-bg-surface: #1E293B;
+  --cad-bg-surface-alt: #162032;
+  --cad-bg-input: #0B111A;
+  --cad-bg-appbar: #131D2E;
+  --cad-bg-blueprint: #0B111A;
+
+  /* Structural 1px Borders */
+  --cad-border: #334155;
+  --cad-border-subtle: #243044;
+  --cad-border-focus: #EA580C;
+  --cad-border-accent: #0284C7;
+
+  /* Utilitarian Engineering Color Palette */
+  --cad-text-primary: #F8FAFC;
+  --cad-text-secondary: #94A3B8;
+  --cad-text-muted: #64748B;
+  --cad-text-accent: #38BDF8;
+
+  /* Accent Tones */
+  --cad-orange-primary: #EA580C;
+  --cad-orange-hover: #D97706;
+  --cad-green-pass: #16A34A;
+  --cad-green-bg: rgba(22, 163, 74, 0.12);
+  --cad-red-fail: #DC2626;
+  --cad-red-bg: rgba(220, 38, 38, 0.12);
+  --cad-blue-cyan: #0284C7;
+  --cad-stone-grey: #64748B;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Control Sizing */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 14px; /* Enterprise desktop density */
+  -webkit-font-smoothing: antialiased;
+  color-scheme: dark;
+}
+
+body.cad-theme {
+  font-family: var(--font-sans);
+  background-color: var(--cad-bg-canvas);
+  color: var(--cad-text-primary);
+  line-height: 1.45;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utilities */
+.font-mono { font-family: var(--font-mono); }
+.font-sans { font-family: var(--font-sans); }
+.font-bold { font-weight: 700; }
+.font-cyan { color: var(--cad-blue-cyan) !important; }
+
+/* ==========================================================================
+   1. Enterprise Top Application Bar (CAD Appbar)
+   ========================================================================== */
+.cad-appbar {
+  background-color: var(--cad-bg-appbar);
+  border-bottom: 1px solid var(--cad-border);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.appbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.suite-emblem {
+  width: 32px;
+  height: 32px;
+  background-color: var(--cad-bg-surface);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appbar-title-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.suite-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+}
+
+.tm {
+  font-size: 0.7rem;
+  color: var(--cad-stone-grey);
+}
+
+.suite-pipe {
+  color: var(--cad-border);
+}
+
+.suite-sub {
+  font-size: 0.85rem;
+  color: var(--cad-text-secondary);
+  font-weight: 500;
+}
+
+.cae-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  background-color: #0F172A;
+  color: var(--cad-orange-primary);
+  border: 1px solid var(--cad-border);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-sm);
+}
+
+.standard-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--cad-text-muted);
+}
+
+.spec-sep {
+  color: var(--cad-border);
+}
+
+/* Appbar Right Actions */
+.appbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.kernel-status-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #CBD5E1;
+  background-color: #0B111A;
+  border: 1px solid var(--cad-border);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+.status-led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.led-green { background-color: var(--cad-green-pass); }
+
+.appbar-divider {
+  width: 1px;
+  height: 22px;
+  background-color: var(--cad-border);
+}
+
+.toolbar-button-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Utilitarian Toolbar Buttons */
+.btn-tb {
+  background-color: var(--cad-bg-surface);
+  border: 1px solid var(--cad-border);
+  color: var(--cad-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-tb:hover {
+  background-color: #27354A;
+  color: #FFFFFF;
+  border-color: #475569;
+}
+
+.btn-tb-primary {
+  background-color: var(--cad-orange-primary);
+  border-color: var(--cad-orange-hover);
+  color: #FFFFFF;
+}
+
+.btn-tb-primary:hover {
+  background-color: var(--cad-orange-hover);
+}
+
+/* ==========================================================================
+   2. Sub-Toolbar: Road Hierarchy Presets Bar & Active Corridor Breadcrumb
+   ========================================================================== */
+.cad-subnav {
+  background-color: #111A29;
+  border-bottom: 1px solid var(--cad-border);
+  padding: 0.45rem 1rem;
+}
+
+.subnav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.project-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.proj-label {
+  color: var(--cad-text-muted);
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.proj-id {
+  color: #38BDF8;
+  font-weight: 700;
+  background-color: #0B111A;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+}
+
+.proj-meta {
+  color: var(--cad-text-muted);
+  font-size: 0.72rem;
+}
+
+/* Segmented Control */
+.preset-segmented-control {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: #0B111A;
+  border: 1px solid var(--cad-border);
+  padding: 0.2rem;
+  border-radius: var(--radius-sm);
+}
+
+.preset-control-label {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--cad-text-muted);
+  padding: 0 0.4rem;
+}
+
+.preset-segment {
+  background: transparent;
+  border: none;
+  color: var(--cad-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.preset-segment:hover {
+  background-color: var(--cad-bg-surface);
+  color: #FFFFFF;
+}
+
+.preset-segment.active {
+  background-color: var(--cad-orange-primary);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   3. Main Workstation Area: 2-Column Desktop Grid
+   ========================================================================== */
+.cad-workspace {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  flex: 1;
+  min-height: calc(100vh - 75px);
+}
+
+/* ==========================================================================
+   LEFT SIDEBAR: Engineering Property Grid
+   ========================================================================== */
+.cad-property-panel {
+  background-color: #131C2C;
+  border-right: 1px solid var(--cad-border);
+  overflow-y: auto;
+}
+
+.panel-inner-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-top-tab {
+  background-color: #162032;
+  border-bottom: 1px solid var(--cad-border);
+  padding: 0.6rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tab-label-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--cad-text-secondary);
+}
+
+.panel-caption {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #E2E8F0;
+  font-family: var(--font-mono);
+}
+
+.btn-grid-action {
+  background: transparent;
+  border: 1px solid var(--cad-border);
+  color: var(--cad-text-muted);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-grid-action:hover {
+  color: var(--cad-text-primary);
+  border-color: #64748B;
+}
+
+.property-grid-form {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Fieldset and Legends */
+.cad-fieldset {
+  background-color: var(--cad-bg-surface);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.cad-legend {
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: #E2E8F0;
+  padding: 0 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-index {
+  color: var(--cad-orange-primary);
+}
+
+/* Property Rows */
+.property-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.property-row.compact {
+  grid-template-columns: 1fr;
+}
+
+.prop-label-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.prop-label-col label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #CBD5E1;
+}
+
+.prop-subtext {
+  font-size: 0.65rem;
+  color: var(--cad-text-muted);
+}
+
+.prop-desc {
+  font-size: 0.68rem;
+  color: var(--cad-text-muted);
+}
+
+.prop-input-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.input-with-unit {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cad-input {
+  width: 100%;
+  background-color: var(--cad-bg-input);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  color: #FFFFFF;
+  padding: 0.35rem 2.2rem 0.35rem 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.cad-input:focus {
+  border-color: var(--cad-border-focus);
+}
+
+.input-unit {
+  position: absolute;
+  right: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--cad-text-muted);
+  pointer-events: none;
+}
+
+.cad-select {
+  width: 100%;
+  background-color: var(--cad-bg-input);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  color: #CBD5E1;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
+  outline: none;
+}
+
+.cad-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background-color: #334155;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.cad-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background-color: var(--cad-orange-primary);
+  border: 1px solid #7C2D12;
+  cursor: pointer;
+}
+
+.property-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.property-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.property-cell label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #CBD5E1;
+}
+
+/* Submit Action Button (Utilitarian CAD button) */
+.form-submit-row {
+  margin-top: 0.25rem;
+}
+
+.btn-execute {
+  width: 100%;
+  background-color: var(--cad-orange-primary);
+  border: 1px solid #C2410C;
+  color: #FFFFFF;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-execute:hover {
+  background-color: var(--cad-orange-hover);
+}
+
+.btn-shortcut {
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+  font-size: 0.68rem;
+  color: #F8FAFC;
+}
+
+.btn-spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-execute.calculating .btn-spinner { display: inline-block; }
+.btn-execute.calculating .exec-icon { display: none; }
+
+/* ==========================================================================
+   RIGHT MAIN WORKSTATION: Engineering Output Viewport
+   ========================================================================== */
+.cad-viewport-area {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background-color: var(--cad-bg-canvas);
+}
+
+.viewport-header-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--cad-border);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.viewport-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+}
+
+.viewport-timestamp {
+  font-size: 0.68rem;
+  color: var(--cad-text-muted);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.compliance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-pass {
+  background-color: var(--cad-green-bg);
+  border: 1px solid var(--cad-green-pass);
+  color: #4ADE80;
+}
+
+.badge-fail {
+  background-color: var(--cad-red-bg);
+  border: 1px solid var(--cad-red-fail);
+  color: #F87171;
+}
+
+.status-marker {
+  font-size: 0.65rem;
+}
+
+/* Sections & Table Titles */
+.section-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.table-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--cad-border-subtle);
+}
+
+.table-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #CBD5E1;
+  letter-spacing: 0.03em;
+}
+
+.table-meta {
+  font-size: 0.68rem;
+  color: var(--cad-text-muted);
+}
+
+.title-with-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.cad-scale-badge {
+  font-size: 0.65rem;
+  background-color: #1E293B;
+  color: #38BDF8;
+  border: 1px solid var(--cad-border);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-sm);
+}
+
+.tool-caption {
+  font-size: 0.68rem;
+  color: var(--cad-text-muted);
+}
+
+/* ==========================================================================
+   Precision Technical Cards (Solid Matte Dark Containers)
+   ========================================================================== */
+.technical-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.cad-data-card {
+  background-color: var(--cad-bg-surface);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.65rem 0.75rem;
+}
+
+.card-caption-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.card-code {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--cad-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.tag-status {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.08rem 0.35rem;
+  border-radius: 2px;
+}
+
+.tag-pass { background-color: var(--cad-green-bg); color: #4ADE80; }
+.tag-fail { background-color: var(--cad-red-bg); color: #F87171; }
+.tag-neutral { background-color: #0F172A; color: #94A3B8; border: 1px solid var(--cad-border); }
+
+.card-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #E2E8F0;
+  margin-bottom: 0.25rem;
+  line-height: 1.25;
+}
+
+.card-metric-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.card-metric-val {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.card-metric-unit {
+  font-size: 0.82rem;
+  color: var(--cad-text-muted);
+}
+
+.card-threshold {
+  font-size: 0.68rem;
+  color: var(--cad-text-muted);
+}
+
+.val-target {
+  color: #E2E8F0;
+}
+
+.card-footer-strip {
+  margin-top: 0.65rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--cad-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.bar-track {
+  width: 100%;
+  height: 4px;
+  background-color: #0B111A;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.fill-green { background-color: var(--cad-green-pass); }
+.fill-blue { background-color: var(--cad-blue-cyan); }
+.fill-red { background-color: var(--cad-red-fail); }
+
+.card-footer-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--cad-text-secondary);
+}
+
+/* ==========================================================================
+   Bill of Quantities (BoQ) Engineering Table
+   ========================================================================== */
+.cad-table-container {
+  background-color: var(--cad-bg-surface);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.cad-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.cad-table thead tr {
+  background-color: #162032;
+  border-bottom: 1px solid var(--cad-border);
+}
+
+.cad-table th {
+  padding: 0.5rem 0.75rem;
+  font-weight: 700;
+  color: #94A3B8;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+
+.cad-table tbody tr {
+  border-bottom: 1px solid var(--cad-border-subtle);
+}
+
+.cad-table tbody tr:hover {
+  background-color: #232F42;
+}
+
+.cad-table td {
+  padding: 0.55rem 0.75rem;
+  color: #E2E8F0;
+}
+
+.row-subtext {
+  font-size: 0.68rem;
+  color: var(--cad-text-muted);
+}
+
+.tag-logistics {
+  background-color: #0B111A;
+  border: 1px solid var(--cad-border);
+  color: #CBD5E1;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  font-size: 0.7rem;
+}
+
+.tag-logistics.total {
+  background-color: rgba(234, 88, 12, 0.15);
+  border-color: var(--cad-orange-primary);
+  color: #FDBA74;
+  font-weight: 700;
+}
+
+.cad-table-total {
+  background-color: #141E2F !important;
+  border-top: 1px solid var(--cad-border) !important;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   CAD Blueprint Viewport
+   ========================================================================== */
+.cad-canvas-box {
+  background-color: var(--cad-bg-blueprint);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.cad-svg-blueprint {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.cad-legend-bar {
+  background-color: var(--cad-bg-surface);
+  border: 1px solid var(--cad-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  padding: 0.45rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.7rem;
+  color: var(--cad-text-secondary);
+}
+
+.legend-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.bit-swatch { background-color: #182234; border: 1px solid #0284C7; }
+.gran-swatch { background-color: #1E293B; border: 1px solid #64748B; }
+.sub-swatch { background-color: #131B28; border: 1px solid #334155; }
+.cone-swatch { background-color: rgba(234, 88, 12, 0.4); border: 1px solid #EA580C; }
+
+/* ==========================================================================
+   Technical Metadata Footer
+   ========================================================================== */
+.cad-meta-footer {
+  background-color: var(--cad-bg-surface);
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+}
+
+.meta-footer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--cad-border-subtle);
+  margin-bottom: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94A3B8;
+}
+
+.meta-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.meta-grid-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cell-head {
+  font-size: 0.62rem;
+  color: var(--cad-text-muted);
+}
+
+.cell-val {
+  font-size: 0.72rem;
+  color: #CBD5E1;
+}
+
+/* ==========================================================================
+   Modals & Dialogs (Project Config, Import, Audit Log)
+   ========================================================================== */
+.cad-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1E293B;
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  color: var(--cad-text-primary);
+  width: 90%;
+  max-width: 540px;
+  padding: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.cad-dialog::backdrop {
+  background-color: rgba(11, 17, 26, 0.75);
+}
+
+.dialog-header {
+  background-color: #162032;
+  border-bottom: 1px solid var(--cad-border);
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialog-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.dialog-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--cad-text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.dialog-close-btn:hover { color: #FFFFFF; }
+
+.dialog-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dialog-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.dialog-field-row label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #CBD5E1;
+}
+
+.dialog-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.dialog-footer {
+  background-color: #162032;
+  border-top: 1px solid var(--cad-border);
+  padding: 0.65rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.dropzone-box {
+  border: 2px dashed var(--cad-border);
+  border-radius: var(--radius-sm);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background-color: #111A29;
+}
+
+.dropzone-text {
+  font-size: 0.75rem;
+  color: var(--cad-text-muted);
+  text-align: center;
+}
+
+.audit-log-terminal {
+  background-color: #0B111A;
+  border: 1px solid var(--cad-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-size: 0.72rem;
+  color: #A5F3FC;
+  max-height: 220px;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Toast Notification
+   ========================================================================== */
+.toast-notification {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: #0B111A;
+  border: 1px solid var(--cad-orange-primary);
+  color: #FFFFFF;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transform: translateY(80px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+  z-index: 1000;
+}
+
+.toast-notification.show {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.toast-icon {
+  color: var(--cad-orange-primary);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1200px) {
+  .cad-workspace {
+    grid-template-columns: 380px 1fr;
+  }
+  .technical-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .meta-footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .cad-workspace {
+    grid-template-columns: 1fr;
+  }
+  .cad-property-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--cad-border);
+  }
+  .toolbar-button-group {
+    flex-wrap: wrap;
+  }
+}
+
+/* ==========================================================================
+   Print Output
+   ========================================================================== */
+@media print {
+  body.cad-theme {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .cad-appbar, .cad-subnav, .cad-property-panel, .viewport-header-strip, .btn-tb, .toast-notification {
+    display: none !important;
+  }
+  .cad-viewport-area {
+    padding: 0 !important;
+  }
+  .cad-data-card, .cad-table-container, .cad-canvas-box {
+    border: 1px solid #94A3B8 !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+  .card-metric-val { color: #000000 !important; }
+}
