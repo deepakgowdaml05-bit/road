@@ -377,8 +377,8 @@
                 <div class="progress-bar" id="tsProgressBar" style="width: 45%;"></div>
               </div>
               <div class="card-meta-row">
-                <span class="meta-label">Limit &le; 240.0 &mu;&epsilon;</span>
-                <span class="meta-val font-mono" id="tsSafetyMargin">+25.7% Margin</span>
+                <span class="meta-label" id="tsLimitLabel">Limit &le; 185.2 &mu;&epsilon; (IRC:37)</span>
+                <span class="meta-val font-mono" id="tsSafetyMargin">+10.7% Margin</span>
               </div>
             </div>
           </div>
@@ -393,7 +393,7 @@
             <div class="card-body">
               <h5 class="card-title">Compressive Strain (CS)</h5>
               <div class="metric-display">
-                <span class="metric-value font-mono" id="csValue">442.8</span>
+                <span class="metric-value font-mono" id="csValue">394.8</span>
                 <span class="metric-unit">&mu;&epsilon;</span>
               </div>
               <p class="card-interpretation">
@@ -405,67 +405,69 @@
                 <div class="progress-bar progress-bar-blue" id="csProgressBar" style="width: 58%;"></div>
               </div>
               <div class="card-meta-row">
-                <span class="meta-label">Limit &le; 620.0 &mu;&epsilon;</span>
-                <span class="meta-val font-mono" id="csSafetyMargin">+28.6% Margin</span>
+                <span class="meta-label" id="csLimitLabel">Limit &le; 425.6 &mu;&epsilon; (IRC:37)</span>
+                <span class="meta-val font-mono" id="csSafetyMargin">+7.2% Margin</span>
               </div>
             </div>
           </div>
 
-          <!-- Card 3: Fatigue Criteria -->
+          <!-- Card 3: Fatigue Life (Nf) -->
           <div class="data-card card-mechanical" id="cardFatigueCriteria">
             <div class="card-glass-glow"></div>
             <div class="card-header">
-              <span class="card-category">LIFE CRITERIA</span>
+              <span class="card-category">FATIGUE RESISTANCE</span>
               <span class="status-tag status-accent" id="fatigueTag">IRC:37-2018</span>
             </div>
             <div class="card-body">
-              <h5 class="card-title">Fatigue Criteria</h5>
+              <h5 class="card-title">Fatigue Life (N<sub>f</sub>)</h5>
               <div class="metric-display">
-                <span class="metric-value font-mono scientific-text" id="fatigueValue">1.34e+41</span>
+                <span class="metric-value font-mono" id="fatigueValue">78.4</span>
+                <span class="metric-unit">MSA</span>
               </div>
               <p class="card-interpretation">
-                Calculated fatigue life coefficient / allowable repetitions before 20% alligator cracking fatigue failure.
+                Allowable standard axle repetitions before 20% fatigue alligator cracking (IRC:37-2018 Eq 3.1).
               </p>
             </div>
             <div class="card-footer">
               <div class="card-meta-box">
                 <div class="meta-cell">
-                  <span class="cell-label">Predicted Nf</span>
-                  <span class="cell-value font-mono" id="nfCycles">8.42 &times; 10<sup>7</sup></span>
+                  <span class="cell-label">Predicted Cycles</span>
+                  <span class="cell-value font-mono" id="nfCycles">7.84 &times; 10<sup>7</sup></span>
                 </div>
                 <div class="meta-cell">
                   <span class="cell-label">Fatigue Damage D<sub>F</sub></span>
-                  <span class="cell-value font-mono" id="fatigueDamageRatio">0.59 (OK)</span>
+                  <span class="cell-value font-mono" id="fatigueDamageRatio">0.64 (OK)</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Card 4: Rutting Criteria -->
+          <!-- Card 4: Rutting Life (Nr) -->
           <div class="data-card card-mechanical" id="cardRuttingCriteria">
             <div class="card-glass-glow"></div>
             <div class="card-header">
-              <span class="card-category">DEFORMATION CRITERIA</span>
-              <span class="status-tag status-accent" id="ruttingTag">AASHTO / IRC</span>
+              <span class="card-category">RUTTING RESISTANCE</span>
+              <span class="status-tag status-accent" id="ruttingTag">IRC:37-2018</span>
             </div>
             <div class="card-body">
-              <h5 class="card-title">Rutting Criteria</h5>
+              <h5 class="card-title">Rutting Life (N<sub>r</sub>)</h5>
               <div class="metric-display">
-                <span class="metric-value font-mono scientific-text" id="ruttingValue">1.70e-16</span>
+                <span class="metric-value font-mono" id="ruttingValue">71.2</span>
+                <span class="metric-unit">MSA</span>
               </div>
               <p class="card-interpretation">
-                Rutting damage multiplier / critical deformation parameter threshold before 20mm surface rut depth.
+                Allowable standard axle repetitions before 20mm critical rut depth (IRC:37-2018 Eq 3.2).
               </p>
             </div>
             <div class="card-footer">
               <div class="card-meta-box">
                 <div class="meta-cell">
-                  <span class="cell-label">Allowable Nr</span>
-                  <span class="cell-value font-mono" id="nrCycles">1.12 &times; 10<sup>8</sup></span>
+                  <span class="cell-label">Allowable Cycles</span>
+                  <span class="cell-value font-mono" id="nrCycles">7.12 &times; 10<sup>7</sup></span>
                 </div>
                 <div class="meta-cell">
                   <span class="cell-label">Rutting Damage D<sub>R</sub></span>
-                  <span class="cell-value font-mono" id="ruttingDamageRatio">0.45 (OK)</span>
+                  <span class="cell-value font-mono" id="ruttingDamageRatio">0.70 (OK)</span>
                 </div>
               </div>
             </div>
@@ -820,6 +822,6 @@
   <!-- PDF Engine & Application Scripts -->
   <script src="jspdf.umd.min.js"></script>
   <script src="jspdf.plugin.autotable.min.js"></script>
-  <script src="app.js?v=4.0"></script>
+  <script src="app.js?v=4.2"></script>
 </body>
 </html>
