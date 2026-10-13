@@ -666,145 +666,47 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.text(`Est. Cost: Rs ${cTotalCrores} Cr ($${cTotalUsd.toLocaleString()})  |  Traffic: ${traffic.toFixed(1)} MSA  |  Footprint: ${area.toLocaleString()} m2`, 116, 33);
 
     // ==========================================
-    // 3. Section 1: Structural Layer Architecture & 2D Cross-Section (Side-by-Side)
+    // 3. Section 1: Structural Input Parameters & Pavement Geometry
     // ==========================================
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     doc.setTextColor(15, 23, 42);
-    doc.text('1. STRUCTURAL LAYER ARCHITECTURE & 2D CROSS-SECTION SCHEMATIC', 12, 40);
+    doc.text('1. STRUCTURAL INPUT PARAMETERS & PAVEMENT GEOMETRY', 12, 40);
 
     const inputRows = [
-      ['Design Traffic Loading', `${traffic.toFixed(1)} MSA`, '80 kN Dual Tire (0.56 MPa)', 'IRC:37 Spectrum'],
-      ['Bituminous Layer (Top)', `${h1} mm`, `E1 = ${e1.toLocaleString()} MPa`, 'BC + DBM Course'],
-      ['Granular Layer (Base)', `${h2} mm`, `E2 = ${e2.toLocaleString()} MPa`, 'WMM + GSB Course'],
-      ['Compacted Soil Subgrade', 'Semi-Infinite', `Ef = ${e3} MPa`, `CBR ~ ${cbrStr}% Native`],
-      ['Road Corridor Geometry', `${len.toFixed(1)} km × ${wid.toFixed(1)} m`, `Area: ${area.toLocaleString()} m2`, 'Carriageway Footprint']
+      ['Design Traffic Loading', `${traffic.toFixed(1)} MSA`, '80 kN Dual Tire (0.56 MPa)', 'IRC:37 Spectrum', 'Cumulative Design Repetitions'],
+      ['Bituminous Layer (Top Course)', `${h1} mm`, `E1 = ${e1.toLocaleString()} MPa`, 'BC + DBM (VG-40 / PMB)', 'Surface Wearing & Bottom Tensile Zone'],
+      ['Granular Base & Subbase', `${h2} mm`, `E2 = ${e2.toLocaleString()} MPa`, 'WMM + GSB (MoRTH 400)', 'Load Dispersion & Drainage Layer'],
+      ['Compacted Soil Subgrade', 'Semi-Infinite', `Ef = ${e3} MPa`, `CBR ~ ${cbrStr}% Native`, 'Foundation Resilient Support (Half-Space)'],
+      ['Carriageway Corridor Footprint', `${len.toFixed(1)} km x ${wid.toFixed(1)} m`, `Area: ${area.toLocaleString()} m2`, '2-Lane Dual Carriageway', 'Standard Cross-Section Highway Corridor']
     ];
 
-    // Left Side: Table 1 (Width: 108mm)
     doc.autoTable({
       startY: 42.5,
-      margin: { left: 12, right: 90 },
-      head: [['Component', 'Dimension', 'Properties', 'Specification Notes']],
+      margin: { left: 12, right: 12 },
+      head: [['Pavement Component', 'Dimension', 'Elastic Properties', 'Material Specification', 'Structural Role']],
       body: inputRows,
       theme: 'grid',
-      headStyles: { fillColor: darkSlate, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.2, cellPadding: 1.8 },
-      styles: { fontSize: 6.9, cellPadding: 1.6, lineColor: borderGray, lineWidth: 0.2 },
+      headStyles: { fillColor: darkSlate, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.5, cellPadding: 2 },
+      styles: { fontSize: 7.2, cellPadding: 1.8, lineColor: borderGray, lineWidth: 0.2 },
       columnStyles: {
-        0: { fontStyle: 'bold', cellWidth: 36 },
-        1: { cellWidth: 22, fontStyle: 'bold' },
-        2: { cellWidth: 26 },
-        3: { cellWidth: 24 }
+        0: { fontStyle: 'bold', cellWidth: 42 },
+        1: { cellWidth: 26, fontStyle: 'bold' },
+        2: { cellWidth: 32 },
+        3: { cellWidth: 38 },
+        4: { cellWidth: 48 }
       },
       pageBreak: 'avoid'
     });
 
-    // Right Side: 2D Structural Cross-Section Blueprint Diagram (Width: 74mm, Height: 33mm)
-    const diagX = 124;
-    const diagY = 42.5;
-    const diagW = 74;
-    const diagH = 32.5;
-
-    // Blueprint Container Box
-    doc.setFillColor(11, 17, 32);
-    doc.setDrawColor(51, 65, 85);
-    doc.setLineWidth(0.35);
-    doc.roundedRect(diagX, diagY, diagW, diagH, 1.5, 1.5, 'FD');
-
-    // Title Tab
-    doc.setFillColor(30, 41, 59);
-    doc.rect(diagX, diagY, diagW, 4.2, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.2);
-    doc.setTextColor(203, 213, 225);
-    doc.text('2D STRUCTURAL CROSS-SECTION & STRAIN VECTORS', diagX + diagW / 2, diagY + 3.1, { align: 'center' });
-
-    // Axle Load Tires
-    const tireY = diagY + 5.5;
-    doc.setFillColor(15, 23, 42);
-    doc.setDrawColor(234, 88, 12);
-    doc.setLineWidth(0.4);
-    doc.rect(diagX + 26, tireY, 7, 3.5, 'FD');
-    doc.rect(diagX + 41, tireY, 7, 3.5, 'FD');
-
-    doc.setFontSize(5.4);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(234, 88, 12);
-    doc.text('40 kN DUAL WHEEL', diagX + 37, tireY - 0.4, { align: 'center' });
-
-    // Layer 1: Bituminous Course
-    const layX = diagX + 8;
-    const layW = diagW - 12;
-    const lay1Y = tireY + 3.5;
-    const lay1H = 6.5;
-    doc.setFillColor(30, 41, 59);
-    doc.setDrawColor(56, 189, 248);
-    doc.setLineWidth(0.3);
-    doc.rect(layX, lay1Y, layW, lay1H, 'FD');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(5.8);
-    doc.setTextColor(248, 250, 252);
-    doc.text(`BITUMINOUS COURSE - ${h1} mm | E1 = ${e1} MPa`, layX + layW / 2, lay1Y + 3.8, { align: 'center' });
-
-    // Tensile Strain Vector Line at bottom of Bituminous
-    doc.setDrawColor(234, 88, 12);
-    doc.setLineWidth(0.35);
-    doc.line(layX + 6, lay1Y + lay1H, layX + layW - 6, lay1Y + lay1H);
-    doc.setFontSize(5.2);
-    doc.setTextColor(234, 88, 12);
-    doc.text(`Critical et = ${ts.toFixed(1)} microstrain (Fatigue)`, layX + layW / 2, lay1Y + lay1H - 0.7, { align: 'center' });
-
-    // Layer 2: Granular Base/Subbase
-    const lay2Y = lay1Y + lay1H;
-    const lay2H = 7.5;
-    doc.setFillColor(51, 65, 85);
-    doc.setDrawColor(100, 116, 139);
-    doc.setLineWidth(0.25);
-    doc.rect(layX, lay2Y, layW, lay2H, 'FD');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(5.8);
-    doc.setTextColor(248, 250, 252);
-    doc.text(`GRANULAR BASE (WMM+GSB) - ${h2} mm | E2 = ${e2} MPa`, layX + layW / 2, lay2Y + 4.5, { align: 'center' });
-
-    // Layer 3: Subgrade Foundation
-    const lay3Y = lay2Y + lay2H;
-    const lay3H = 5.2;
-    doc.setFillColor(15, 23, 42);
-    doc.setDrawColor(71, 85, 105);
-    doc.rect(layX, lay3Y, layW, lay3H, 'FD');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(5.6);
-    doc.setTextColor(203, 213, 225);
-    doc.text(`SUBGRADE FOUNDATION | Ef = ${e3} MPa (CBR ~${cbrStr}%)`, layX + layW / 2, lay3Y + 3.4, { align: 'center' });
-
-    // Compressive Strain Arrow & Label
-    doc.setDrawColor(56, 189, 248);
-    doc.line(diagX + 37, lay3Y, diagX + 37, lay3Y + 3.2);
-    doc.setFontSize(5.0);
-    doc.setTextColor(56, 189, 248);
-    doc.text(`Critical ev = ${cs.toFixed(1)} microstrain`, diagX + 37, lay3Y - 0.5, { align: 'center' });
-
-    // Total Depth Dimension Bracket
-    doc.setDrawColor(148, 163, 184);
-    doc.setLineWidth(0.25);
-    doc.line(layX - 2.5, lay1Y, layX - 2.5, lay2Y + lay2H);
-    doc.line(layX - 4, lay1Y, layX - 1.5, lay1Y);
-    doc.line(layX - 4, lay2Y + lay2H, layX - 1.5, lay2Y + lay2H);
-    doc.setFontSize(5.2);
-    doc.setTextColor(148, 163, 184);
-    doc.text(`${h1 + h2} mm`, layX - 3.2, lay1Y + (lay1H + lay2H) / 2, { angle: 90, align: 'center' });
-
     // ==========================================
     // 4. Section 2: Mechanistic Strain Responses & Failure Criteria
     // ==========================================
-    const sec2Y = Math.max(doc.lastAutoTable.finalY, diagY + diagH) + 4.5;
+    const sec2Y = doc.lastAutoTable.finalY + 5;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     doc.setTextColor(15, 23, 42);
-    doc.text('2. MECHANISTIC STRAIN RESPONSES & FAILURE CRITERIA', 12, sec2Y);
+    doc.text('2. MECHANISTIC STRAIN RESPONSES & FAILURE CRITERIA (MULTI-LAYER CONTINUUM)', 12, sec2Y);
 
     const nfMillions = (nf / 1e6).toFixed(2);
     const nrMillions = (nr / 1e6).toFixed(2);
@@ -822,8 +724,8 @@ document.addEventListener('DOMContentLoaded', () => {
       head: [['Mechanic Response Parameter', 'Surrogate Value', 'Allowable Threshold', 'Safety Margin / Life', 'Cumulative Damage', 'Verification']],
       body: mechRows,
       theme: 'grid',
-      headStyles: { fillColor: darkSlate, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.8, cellPadding: 2 },
-      styles: { fontSize: 7.4, cellPadding: 1.8, lineColor: borderGray, lineWidth: 0.2 },
+      headStyles: { fillColor: darkSlate, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.5, cellPadding: 2 },
+      styles: { fontSize: 7.2, cellPadding: 1.8, lineColor: borderGray, lineWidth: 0.2 },
       columnStyles: {
         0: { fontStyle: 'bold', cellWidth: 44 },
         1: { cellWidth: 30, fontStyle: 'bold' },
@@ -838,7 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 5. Section 3: Material Quantities & Estimated Construction Cost (BoQ Valuation)
     // ==========================================
-    const sec3Y = doc.lastAutoTable.finalY + 4.5;
+    const sec3Y = doc.lastAutoTable.finalY + 5;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     doc.setTextColor(15, 23, 42);
@@ -857,8 +759,8 @@ document.addEventListener('DOMContentLoaded', () => {
       head: [['Material Layer Description', 'Quantity / Area', 'Standard Rate (MoRTH)', 'Subtotal (INR)', 'Subtotal (USD)', 'Logistical Demand']],
       body: qtyRows,
       theme: 'grid',
-      headStyles: { fillColor: orangeAccent, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.8, cellPadding: 2 },
-      styles: { fontSize: 7.4, cellPadding: 1.8, lineColor: borderGray, lineWidth: 0.2 },
+      headStyles: { fillColor: orangeAccent, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.5, cellPadding: 2 },
+      styles: { fontSize: 7.2, cellPadding: 1.8, lineColor: borderGray, lineWidth: 0.2 },
       columnStyles: {
         0: { fontStyle: 'bold', cellWidth: 46 },
         1: { cellWidth: 42 },
@@ -871,54 +773,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 6. Section 4: Engineering Certification & Sign-Off Block
+    // 6. Section 4: Key Technical Observations & Maintenance Life-Cycle
     // ==========================================
-    const signOffY = doc.lastAutoTable.finalY + 5;
+    const obsY = doc.lastAutoTable.finalY + 4.5;
+    doc.setDrawColor(226, 232, 240);
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(12, obsY, 186, 28, 2, 2, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.2);
+    doc.setTextColor(15, 23, 42);
+    doc.text('4. TECHNICAL OBSERVATIONS & MAINTENANCE LIFE-CYCLE RECOMMENDATIONS', 16, obsY + 5.2);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6.8);
+    doc.setTextColor(71, 85, 105);
+    doc.text(`* Fatigue Performance: Tensile strain of ${ts.toFixed(1)} microstrain yields predicted Nf = ${nfMillions}M axles (Demand: ${traffic.toFixed(1)} MSA). Structural fatigue margin is ${tsMargin >= 0 ? '+' : ''}${tsMargin}%.`, 16, obsY + 10.5);
+    doc.text(`* Rutting Resistance: Subgrade vertical strain of ${cs.toFixed(1)} microstrain yields predicted Nr = ${nrMillions}M axles. Rutting safety margin is ${csMargin >= 0 ? '+' : ''}${csMargin}%.`, 16, obsY + 15.0);
+    doc.text('* Preservation Protocol: Apply preventive micro-surfacing / thin seal-coat at Year 7-8 to mitigate thermal oxidation and water ingress.', 16, obsY + 19.5);
+    doc.text('* Drawing Annexure: Detailed 2D Structural Cross-Section Blueprint & CAD Schematics are provided on Page 2 (Annexure A).', 16, obsY + 24.0);
+
+    // ==========================================
+    // 7. Section 5: Engineering Certification & Statutory Sign-Off Block
+    // ==========================================
+    const signOffY = obsY + 32;
     doc.setDrawColor(203, 213, 225);
     doc.setFillColor(248, 250, 252);
-    doc.roundedRect(12, signOffY, 186, 30, 2, 2, 'FD');
+    doc.roundedRect(12, signOffY, 186, 29, 2, 2, 'FD');
 
     // Certification Header & Statement
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
+    doc.setFontSize(8.2);
     doc.setTextColor(15, 23, 42);
-    doc.text('ENGINEERING CERTIFICATION & SIGN-OFF', 16, signOffY + 5.2);
+    doc.text('5. ENGINEERING CERTIFICATION & STATUTORY AUDIT SIGN-OFF', 16, signOffY + 5);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.0);
+    doc.setFontSize(6.8);
     doc.setTextColor(71, 85, 105);
-    doc.text('I hereby certify that the mechanistic responses, material takeoffs, and cost valuations presented herein have been validated against', 16, signOffY + 9.8);
-    doc.text('IRC:37-2018 & MoRTH benchmarks utilizing the verified Multi-Output Random Forest surrogate continuum formulation.', 16, signOffY + 13.5);
+    doc.text('I hereby certify that the mechanistic responses, material takeoffs, and cost valuations presented herein have been validated against', 16, signOffY + 9.5);
+    doc.text('IRC:37-2018 & MoRTH benchmarks utilizing the verified Multi-Output Random Forest surrogate continuum formulation.', 16, signOffY + 13.2);
 
     // Sign-Off Lines
     doc.setDrawColor(148, 163, 184);
     doc.setLineWidth(0.3);
-    doc.line(16, signOffY + 22, 76, signOffY + 22);
-    doc.line(84, signOffY + 22, 144, signOffY + 22);
+    doc.line(16, signOffY + 21.5, 76, signOffY + 21.5);
+    doc.line(84, signOffY + 21.5, 144, signOffY + 21.5);
 
-    doc.setFontSize(6.8);
+    doc.setFontSize(6.6);
     doc.setTextColor(100, 116, 139);
-    doc.text('Prepared By: Pavement Design Engineer', 16, signOffY + 26);
-    doc.text('Approved By: Lead Highway Consultant', 84, signOffY + 26);
+    doc.text('Prepared By: Pavement Design Engineer', 16, signOffY + 25.5);
+    doc.text('Approved By: Lead Highway Consultant', 84, signOffY + 25.5);
 
     // Circular Engineering Stamp Graphic (Right side of box)
     const stampX = 172;
-    const stampY = signOffY + 15;
+    const stampY = signOffY + 14.5;
     doc.setDrawColor(15, 23, 42);
     doc.setLineWidth(0.6);
-    doc.circle(stampX, stampY, 10.5, 'S');
+    doc.circle(stampX, stampY, 10, 'S');
     doc.setLineWidth(0.3);
-    doc.circle(stampX, stampY, 9.0, 'S');
+    doc.circle(stampX, stampY, 8.5, 'S');
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.2);
     doc.setTextColor(15, 23, 42);
     doc.text('IRC:37', stampX, stampY - 1, { align: 'center' });
-    doc.setFontSize(6.8);
+    doc.setFontSize(6.5);
     doc.text('VERIFIED', stampX, stampY + 3.2, { align: 'center' });
 
     // ==========================================
-    // 7. Strict Footer & Page 1 Enforcement
+    // 8. Page 1 Footer
     // ==========================================
     doc.setDrawColor(226, 232, 240);
     doc.line(12, 283, 198, 283);
@@ -926,11 +849,380 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(7.5);
     doc.setTextColor(148, 163, 184);
-    doc.text('Generated via PAVE-AI STRUCT Engineering Suite | Official Calculation Sheet', 12, 288);
-    doc.text('Page 1 of 1', 198, 288, { align: 'right' });
+    doc.text('Generated via PAVE-AI STRUCT Engineering Suite | Official Calculation Sheet | Continued on Page 2 (Annexure A)', 12, 288);
+    doc.text('Page 1 of 2', 198, 288, { align: 'right' });
 
-    // Enforce strictly single page
-    while (doc.internal.getNumberOfPages() > 1) {
+    // =========================================================================
+    // PAGE 2: ANNEXURE A — 2D STRUCTURAL CROSS-SECTION & MECHANISTIC STRAIN BLUEPRINT
+    // =========================================================================
+    doc.addPage();
+
+    // 1. Top Header Banner (Height: 22mm)
+    doc.setFillColor(...navyHeader);
+    doc.rect(0, 0, 210, 22, 'F');
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.text('ANNEXURE A: STRUCTURAL CROSS-SECTION & STRAIN BLUEPRINT', 12, 9);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.8);
+    doc.setTextColor(203, 213, 225);
+    doc.text('Mechanistic-Empirical Multi-Layer Elastic Continuum Model | IRC:37-2018 Design Standards', 12, 14.5);
+
+    doc.setFontSize(7.2);
+    doc.setTextColor(148, 163, 184);
+    doc.text('Continuum Surrogate: Multi-Output Random Forest Regressor (v2.4-ML)', 12, 19.5);
+
+    // Right-Aligned Meta Block
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(255, 255, 255);
+    doc.text(`DOC REF: ${docRef}`, 198, 9, { align: 'right' });
+
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(203, 213, 225);
+    doc.text(`DATE: ${dateStr}`, 198, 14.5, { align: 'right' });
+    doc.text('SHEET: 2 OF 2 (TECHNICAL DRAWING)', 198, 19.5, { align: 'right' });
+
+    // Thin Safety Orange Divider Line
+    doc.setFillColor(...orangeAccent);
+    doc.rect(0, 22, 210, 1.2, 'F');
+
+    // Outer CAD Drawing Border
+    doc.setDrawColor(203, 213, 225);
+    doc.setLineWidth(0.4);
+    doc.rect(12, 26, 186, 254, 'S');
+
+    // Section Heading
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(15, 23, 42);
+    doc.text('2D PAVEMENT CROSS-SECTION & LOAD-STRAIN CONTINUUM PROFILE (N.T.S.)', 16, 32);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.2);
+    doc.setTextColor(100, 116, 139);
+    doc.text('Standard 80 kN Single Axle Dual-Wheel Assembly (40 kN per wheel set) with multi-layer elastic load dispersion', 16, 36);
+
+    // Large CAD Blueprint Box
+    const bpX = 16;
+    const bpY = 39;
+    const bpW = 178;
+    const bpH = 95;
+
+    // Background Dark Slate Technical Canvas
+    doc.setFillColor(11, 19, 43); // Deep CAD slate
+    doc.setDrawColor(51, 65, 85);
+    doc.setLineWidth(0.4);
+    doc.roundedRect(bpX, bpY, bpW, bpH, 2, 2, 'FD');
+
+    // Blueprint Title Bar
+    doc.setFillColor(30, 41, 59);
+    doc.rect(bpX, bpY, bpW, 6, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.8);
+    doc.setTextColor(203, 213, 225);
+    doc.text('MULTI-LAYER ELASTIC CONTINUUM CROSS-SECTION WITH CRITICAL STRAIN VECTOR PLANES', bpX + bpW / 2, bpY + 4.2, { align: 'center' });
+
+    // Draw CAD Grid Lines (Subtle technical background)
+    doc.setDrawColor(22, 35, 60);
+    doc.setLineWidth(0.15);
+    for (let gridX = bpX + 15; gridX < bpX + bpW - 10; gridX += 18) {
+      doc.line(gridX, bpY + 6, gridX, bpY + bpH);
+    }
+    for (let gridY = bpY + 16; gridY < bpY + bpH - 5; gridY += 12) {
+      doc.line(bpX, gridY, bpX + bpW, gridY);
+    }
+
+    // Dual-Wheel Tire Footprints & Axle Load
+    const centerX = bpX + bpW / 2; // 105 mm
+    const tireTopY = bpY + 9.5;
+    const tireW = 14;
+    const tireH = 7.5;
+    const tireGap = 16; // 30 mm center-to-center
+
+    // Axle Load Label & Arrows
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.2);
+    doc.setTextColor(234, 88, 12); // Safety Orange
+    doc.text('40 kN DUAL-WHEEL HALF-AXLE LOAD (0.56 MPa CONTACT STRESS)', centerX, tireTopY - 1.2, { align: 'center' });
+
+    // Tires
+    const leftTireX = centerX - tireGap / 2 - tireW;
+    const rightTireX = centerX + tireGap / 2;
+
+    doc.setFillColor(15, 23, 42);
+    doc.setDrawColor(234, 88, 12);
+    doc.setLineWidth(0.6);
+    doc.rect(leftTireX, tireTopY, tireW, tireH, 'FD');
+    doc.rect(rightTireX, tireTopY, tireW, tireH, 'FD');
+
+    // Tire Tread Hatching
+    doc.setDrawColor(234, 88, 12);
+    doc.setLineWidth(0.2);
+    for (let i = 2; i < tireW; i += 3) {
+      doc.line(leftTireX + i, tireTopY, leftTireX + i, tireTopY + tireH);
+      doc.line(rightTireX + i, tireTopY, rightTireX + i, tireTopY + tireH);
+    }
+
+    // Dual Tire Center Spacing Dimension
+    doc.setDrawColor(148, 163, 184);
+    doc.setLineWidth(0.25);
+    doc.line(leftTireX + tireW / 2, tireTopY + tireH / 2, rightTireX + tireW / 2, tireTopY + tireH / 2);
+    doc.setFontSize(5.5);
+    doc.setTextColor(203, 213, 225);
+    doc.text('310 mm c/c', centerX, tireTopY + tireH / 2 - 1, { align: 'center' });
+
+    // Layers Geometry
+    const layerLeftX = bpX + 22;
+    const layerWidth = bpW - 32; // 146 mm
+    const layer1TopY = tireTopY + tireH; // Y = 24 mm
+    const layer1H = 18; // Bituminous
+    const layer2H = 26; // Granular
+    const layer3H = 27; // Subgrade
+    const strainLineY = layer1TopY + layer1H;
+    const layer2TopY = strainLineY;
+    const layer3TopY = layer2TopY + layer2H;
+
+    // Layer 1: Bituminous Course (BC + DBM)
+    doc.setFillColor(30, 41, 59);
+    doc.setDrawColor(56, 189, 248);
+    doc.setLineWidth(0.4);
+    doc.rect(layerLeftX, layer1TopY, layerWidth, layer1H, 'FD');
+
+    // Layer 2: Granular Base & Subbase (WMM + GSB)
+    doc.setFillColor(51, 65, 85);
+    doc.setDrawColor(100, 116, 139);
+    doc.setLineWidth(0.35);
+    doc.rect(layerLeftX, layer2TopY, layerWidth, layer2H, 'FD');
+
+    // Layer 3: Compacted Subgrade Foundation
+    doc.setFillColor(15, 23, 42);
+    doc.setDrawColor(71, 85, 105);
+    doc.setLineWidth(0.35);
+    doc.rect(layerLeftX, layer3TopY, layerWidth, layer3H, 'FD');
+
+    // Stress dispersion cone (45 degree dashed lines from dual tires down to subgrade)
+    doc.setDrawColor(148, 163, 184);
+    doc.setLineWidth(0.25);
+    doc.line(leftTireX, layer1TopY, leftTireX - 14, layer2TopY + layer2H);
+    doc.line(rightTireX + tireW, layer1TopY, rightTireX + tireW + 14, layer2TopY + layer2H);
+
+    // Ground Hatch Lines at bottom of subgrade
+    doc.setDrawColor(51, 65, 85);
+    doc.setLineWidth(0.2);
+    for (let gx = layerLeftX + 5; gx < layerLeftX + layerWidth - 5; gx += 8) {
+      doc.line(gx, layer3TopY + layer3H - 4, gx + 4, layer3TopY + layer3H);
+    }
+
+    // Layer 1 Labels
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.2);
+    doc.setTextColor(248, 250, 252);
+    doc.text(`BITUMINOUS SURFACING COURSE (BC + DBM) — ${h1} mm`, layerLeftX + layerWidth / 2, layer1TopY + 5.5, { align: 'center' });
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6.0);
+    doc.setTextColor(203, 213, 225);
+    doc.text(`Resilient Modulus E1 = ${e1.toLocaleString()} MPa  |  Poisson's Ratio v1 = 0.35  |  Design Fatigue Life Nf = ${(nf / 1e6).toFixed(2)}M Axles`, layerLeftX + layerWidth / 2, layer1TopY + 10.2, { align: 'center' });
+
+    // Layer 2 Labels
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.2);
+    doc.setTextColor(248, 250, 252);
+    doc.text(`UNBOUND GRANULAR BASE & SUBBASE (WMM + GSB) — ${h2} mm`, layerLeftX + layerWidth / 2, layer2TopY + 10, { align: 'center' });
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6.0);
+    doc.setTextColor(203, 213, 225);
+    doc.text(`Resilient Modulus E2 = ${e2.toLocaleString()} MPa  |  Poisson's Ratio v2 = 0.35  |  MoRTH Section 400 Specifications`, layerLeftX + layerWidth / 2, layer2TopY + 15, { align: 'center' });
+    doc.text('Boussinesq Stress Attenuation & Aggregate Interlocking Shear Resistance', layerLeftX + layerWidth / 2, layer2TopY + 19.5, { align: 'center' });
+
+    // Subgrade Labels
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.2);
+    doc.setTextColor(248, 250, 252);
+    doc.text('COMPACTED SUBGRADE FOUNDATION — Semi-Infinite Elastic Half-Space', layerLeftX + layerWidth / 2, layer3TopY + 15.5, { align: 'center' });
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6.0);
+    doc.setTextColor(203, 213, 225);
+    doc.text(`Resilient Modulus Ef = ${e3} MPa  |  In-Situ CBR ~ ${cbrStr}%  |  Poisson's Ratio v3 = 0.40  |  Design Rutting Life Nr = ${(nr / 1e6).toFixed(2)}M Axles`, layerLeftX + layerWidth / 2, layer3TopY + 20.5, { align: 'center' });
+
+    // Critical Tensile Strain Vector Line & Callout (at bottom of Layer 1, rendered on top)
+    doc.setDrawColor(234, 88, 12);
+    doc.setLineWidth(0.5);
+    doc.line(layerLeftX + 10, strainLineY, layerLeftX + layerWidth - 10, strainLineY);
+
+    // Vector Arrows (Bidirectional)
+    doc.setFillColor(234, 88, 12);
+    doc.triangle(layerLeftX + 10, strainLineY, layerLeftX + 14, strainLineY - 1.2, layerLeftX + 14, strainLineY + 1.2, 'F');
+    doc.triangle(layerLeftX + layerWidth - 10, strainLineY, layerLeftX + layerWidth - 14, strainLineY - 1.2, layerLeftX + layerWidth - 14, strainLineY + 1.2, 'F');
+
+    // Tensile Strain Label Badge
+    doc.setFillColor(15, 23, 42);
+    doc.setDrawColor(234, 88, 12);
+    doc.setLineWidth(0.35);
+    doc.roundedRect(centerX - 46, strainLineY - 3.2, 92, 6.4, 1.2, 1.2, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
+    doc.setTextColor(251, 146, 60); // Crisp light orange
+    doc.text(`CRITICAL TENSILE STRAIN: et = ${ts.toFixed(1)} microstrain (Limit <= 240.0 microstrain) - Bottom-up Fatigue`, centerX, strainLineY + 1.2, { align: 'center' });
+
+    // Critical Compressive Strain Arrow & Badge (at top of Subgrade, rendered on top)
+    doc.setFillColor(15, 23, 42);
+    doc.setDrawColor(56, 189, 248);
+    doc.setLineWidth(0.35);
+    doc.roundedRect(centerX - 48, layer3TopY + 2.5, 96, 6.4, 1.2, 1.2, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
+    doc.setTextColor(56, 189, 248);
+    doc.text(`CRITICAL COMPRESSIVE STRAIN: ev = ${cs.toFixed(1)} microstrain (Limit <= 620.0 microstrain) - Subgrade Rutting`, centerX, layer3TopY + 6.9, { align: 'center' });
+
+    // Vertical Dimension Brackets on Left Side
+    const dimX = layerLeftX - 7;
+    doc.setDrawColor(148, 163, 184);
+    doc.setLineWidth(0.3);
+
+    // Bituminous thickness dimension
+    doc.line(dimX, layer1TopY, dimX, layer1TopY + layer1H);
+    doc.line(dimX - 2, layer1TopY, dimX + 2, layer1TopY);
+    doc.line(dimX - 2, layer1TopY + layer1H, dimX + 2, layer1TopY + layer1H);
+    doc.setFontSize(5.8);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(203, 213, 225);
+    doc.text(`${h1} mm`, dimX - 2.5, layer1TopY + layer1H / 2, { angle: 90, align: 'center' });
+
+    // Granular thickness dimension
+    doc.line(dimX, layer2TopY, dimX, layer2TopY + layer2H);
+    doc.line(dimX - 2, layer2TopY + layer2H, dimX + 2, layer2TopY + layer2H);
+    doc.text(`${h2} mm`, dimX - 2.5, layer2TopY + layer2H / 2, { angle: 90, align: 'center' });
+
+    // Total Pavement Depth bracket (outer left)
+    const totalDimX = dimX - 7;
+    doc.line(totalDimX, layer1TopY, totalDimX, layer2TopY + layer2H);
+    doc.line(totalDimX - 2, layer1TopY, totalDimX + 2, layer1TopY);
+    doc.line(totalDimX - 2, layer2TopY + layer2H, totalDimX + 2, layer2TopY + layer2H);
+    doc.setTextColor(234, 88, 12);
+    doc.text(`TOTAL H = ${h1 + h2} mm`, totalDimX - 2.5, layer1TopY + (layer1H + layer2H) / 2, { angle: 90, align: 'center' });
+
+    // 5. Table 4: Structural Layer Continuum Specifications
+    const tbl4Y = bpY + bpH + 4.5;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.setTextColor(15, 23, 42);
+    doc.text('LAYER STRUCTURAL SPECIFICATIONS & CONTINUUM CONTINUITY MATRIX', 16, tbl4Y);
+
+    const layerSpecs = [
+      ['Layer 1: Bituminous Surface (BC+DBM)', `${h1} mm`, `${e1.toLocaleString()} MPa`, '0.35', 'Bottom-Up Fatigue Cracking (et)', '<= 240.0 microstrain (IRC:37 Eq 3.1)', 'VG-40 / PMB-120'],
+      ['Layer 2: Granular Base/Subbase (WMM+GSB)', `${h2} mm`, `${e2.toLocaleString()} MPa`, '0.35', 'Aggregate Shear Displacement', 'Stress Spreading / Interlock', 'MoRTH Sec 400 Graded'],
+      ['Layer 3: Subgrade Foundation (Prepared)', 'Semi-Infinite', `${e3} MPa`, '0.40', 'Permanent Subgrade Rutting (ev)', '<= 620.0 microstrain (AASHTO M-E)', `CBR ~ ${cbrStr}% Native (97% MDD)`]
+    ];
+
+    doc.autoTable({
+      startY: tbl4Y + 2.5,
+      margin: { left: 16, right: 16 },
+      head: [['Layer Continuum Component', 'Thickness', 'Elastic Modulus', 'Poisson v', 'Primary Failure Mechanism', 'Performance Criteria', 'Standard Material Spec']],
+      body: layerSpecs,
+      theme: 'grid',
+      headStyles: { fillColor: darkSlate, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.2, cellPadding: 1.8 },
+      styles: { fontSize: 6.9, cellPadding: 1.6, lineColor: borderGray, lineWidth: 0.2 },
+      columnStyles: {
+        0: { fontStyle: 'bold', cellWidth: 44 },
+        1: { cellWidth: 18, fontStyle: 'bold' },
+        2: { cellWidth: 22 },
+        3: { cellWidth: 15 },
+        4: { cellWidth: 38 },
+        5: { cellWidth: 34, fontStyle: 'bold', textColor: [2, 132, 199] },
+        6: { cellWidth: 27 }
+      },
+      pageBreak: 'avoid'
+    });
+
+    // 6. Section: Drawing Notes & CAD Title Block (Side-by-Side at bottom)
+    const notesY = doc.lastAutoTable.finalY + 4;
+    const notesW = 114;
+    const cadW = 58;
+    const cadX = 16 + notesW + 4; // 134
+    const boxH = 41;
+
+    // Left: Drawing Notes Box
+    doc.setDrawColor(203, 213, 225);
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(16, notesY, notesW, boxH, 1.5, 1.5, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(15, 23, 42);
+    doc.text('ENGINEERING DRAWING SPECIFICATIONS & GENERAL NOTES', 20, notesY + 5);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6.2);
+    doc.setTextColor(71, 85, 105);
+    doc.text('1. All layer thicknesses shown represent finished compacted profiles (tolerance +/- 5 mm).', 20, notesY + 10);
+    doc.text('2. Bituminous mix design shall conform to MoRTH Section 500 utilizing VG-40 bitumen / PMB.', 20, notesY + 15);
+    doc.text('3. Granular base (WMM) and subbase (GSB Grade-I) compacted to >= 98% modified Proctor density.', 20, notesY + 20);
+    doc.text('4. Subgrade top 500 mm compacted at optimum moisture content achieving >= 97% MDD (IS:2720).', 20, notesY + 25);
+    doc.text('5. Linear elastic multi-layer continuum formulation assumes continuous interface shear bonding.', 20, notesY + 30);
+    doc.text('6. Schematic drawing (N.T.S.) accompanies engineering calculation sheet Doc Ref: ' + docRef, 20, notesY + 35);
+
+    // Right: CAD Title Block Box
+    doc.setDrawColor(15, 23, 42);
+    doc.setFillColor(255, 255, 255);
+    doc.setLineWidth(0.4);
+    doc.roundedRect(cadX, notesY, cadW, boxH, 1.5, 1.5, 'FD');
+
+    // Title Block Header
+    doc.setFillColor(30, 41, 59);
+    doc.rect(cadX, notesY, cadW, 6.5, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.8);
+    doc.setTextColor(255, 255, 255);
+    doc.text('CIVIL ENGINEERING DRAWING BLOCK', cadX + cadW / 2, notesY + 4.5, { align: 'center' });
+
+    // Grid rows in CAD title block
+    doc.setDrawColor(203, 213, 225);
+    doc.setLineWidth(0.2);
+    doc.line(cadX, notesY + 13.5, cadX + cadW, notesY + 13.5);
+    doc.line(cadX, notesY + 20.5, cadX + cadW, notesY + 20.5);
+    doc.line(cadX, notesY + 27.5, cadX + cadW, notesY + 27.5);
+    doc.line(cadX, notesY + 34.5, cadX + cadW, notesY + 34.5);
+
+    doc.setFontSize(5.8);
+    doc.setTextColor(100, 116, 139);
+    doc.text('PROJECT:', cadX + 2.5, notesY + 10.5);
+    doc.text('DRAWING:', cadX + 2.5, notesY + 17.5);
+    doc.text('DWG NO:', cadX + 2.5, notesY + 24.5);
+    doc.text('SCALE / REV:', cadX + 2.5, notesY + 31.5);
+    doc.text('STATUS:', cadX + 2.5, notesY + 38.5);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(15, 23, 42);
+    doc.text('PAVE-AI STRUCT CORRIDOR', cadX + 17, notesY + 10.5);
+    doc.text('2D CONTINUUM PROFILE', cadX + 17, notesY + 17.5);
+    doc.text('DWG-' + docRef, cadX + 17, notesY + 24.5);
+    doc.text('N.T.S. | REV: 02 (FINAL)', cadX + 17, notesY + 31.5);
+    doc.setTextColor(16, 185, 129); // Green
+    doc.text('APPROVED FOR CONSTRUCTION', cadX + 17, notesY + 38.5);
+
+    // ==========================================
+    // 7. Page 2 Footer
+    // ==========================================
+    doc.setDrawColor(226, 232, 240);
+    doc.line(12, 283, 198, 283);
+
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(7.5);
+    doc.setTextColor(148, 163, 184);
+    doc.text('Generated via PAVE-AI STRUCT Engineering Suite | Annexure A: Structural Cross-Section Blueprint', 12, 288);
+    doc.text('Page 2 of 2', 198, 288, { align: 'right' });
+
+    // Guarantee strictly 2 pages
+    while (doc.internal.getNumberOfPages() > 2) {
       doc.deletePage(doc.internal.getNumberOfPages());
     }
 
