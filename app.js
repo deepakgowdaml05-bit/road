@@ -566,8 +566,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const csAllowable = Math.pow((1.41 * 1e-8) / trafficAxles, 1 / 4.5337) * 1e6;
     const dR = trafficAxles / nr;
 
-    const tsMargin = ((tsAllowable - ts) / tsAllowable * 100).toFixed(1);
-    const csMargin = ((csAllowable - cs) / csAllowable * 100).toFixed(1);
+    const tsMarginVal = (tsAllowable - ts) / tsAllowable * 100;
+    const csMarginVal = (csAllowable - cs) / csAllowable * 100;
+    const tsMargin = (tsMarginVal >= 0 ? '+' : '') + tsMarginVal.toFixed(1) + '%';
+    const csMargin = (csMarginVal >= 0 ? '+' : '') + csMarginVal.toFixed(1) + '%';
     const isCompliant = dF <= 1.0 && dR <= 1.0;
 
     // Volumetrics & Quantities (MoRTH Rev-5 Densities)
@@ -907,10 +909,10 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.text('Design Axle Load: 80 kN Standard Axle (40 kN Dual-Wheel Half-Axle, q = 0.56 MPa, S = 310 mm c/c) | IRC:37-2018 Plate-1 | N.T.S.', 17, 34.5);
 
     // Large CAD Drawing Canvas Box (Clean White Background)
-    const dwgX = 16;
+    const dwgX = 15;
     const dwgY = 36.5;
-    const dwgW = 178;
-    const dwgH = 97;
+    const dwgW = 180;
+    const dwgH = 104;
 
     // Canvas Fill (Clean White Paper with subtle technical border)
     doc.setFillColor(255, 255, 255);
@@ -918,67 +920,79 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.setLineWidth(0.35);
     doc.rect(dwgX, dwgY, dwgW, dwgH, 'FD');
 
-    // Geometry Definitions inside Canvas
-    const layX = dwgX + 6;   // X = 22
-    const layW = 142;        // Layer width
-    const centerX = layX + layW / 2; // Centerline X = 93
-    const surfY = dwgY + 20.0; // Road Surface Level Y = 56.5
+    // Symmetrical Geometry inside Canvas
+    // Canvas center is X = 105. Pavement layer width = 118 mm (X: 46 to 164)
+    // Canvas boundaries: dwgX = 15 mm, dwgX + dwgW = 195 mm.
+    // Margin on left: 46 - 15 = 31 mm. Margin on right: 195 - 164 = 31 mm.
+    const centerX = 105;
+    const layW = 118;
+    const layX = centerX - layW / 2; // X = 46 mm
+    const surfY = dwgY + 23.5;       // Y = 60.0 mm (Datum surface)
 
-    // 1. Carriageway Header Bar & Camber Notations (Positioned over Right Lane X = 112)
-    const rightLaneCenter = centerX + 22; // X = 115
+    // 1. Carriageway Top Zone: Header, Lane Ticks, Dimensions & Camber
+    // Carriageway Title above center
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.4);
+    doc.setFontSize(6.5);
     doc.setTextColor(15, 23, 42);
-    doc.text('7.00 m TWO-LANE CARRIAGEWAY (IRC:73-1980)', rightLaneCenter, dwgY + 4.8, { align: 'center' });
+    doc.text('7.00 m TWO-LANE CARRIAGEWAY (IRC:73-1980)', centerX, dwgY + 4.5, { align: 'center' });
+
+    // Dimension Line spanning 7.00 m Carriageway at dwgY + 8.5 mm
+    doc.setDrawColor(100, 116, 139);
+    doc.setLineWidth(0.25);
+    doc.line(layX, dwgY + 8.5, layX + layW, dwgY + 8.5);
+    doc.line(layX, dwgY + 7.0, layX, dwgY + 10.0);
+    doc.line(centerX, dwgY + 7.0, centerX, dwgY + 10.0);
+    doc.line(layX + layW, dwgY + 7.0, layX + layW, dwgY + 10.0);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(5.5);
-    doc.setTextColor(100, 116, 139);
-    doc.text('<- 2.5% Normal Camber Slope ->', rightLaneCenter, dwgY + 8.8, { align: 'center' });
+    doc.setFontSize(5.2);
+    doc.setTextColor(71, 85, 105);
+    doc.text('3.50 m LANE', layX + layW / 4, dwgY + 7.5, { align: 'center' });
+    doc.text('3.50 m LANE', layX + 3 * layW / 4, dwgY + 7.5, { align: 'center' });
 
     // Centerline CL Symbol & Dashed Marker
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(5.8);
+    doc.setFontSize(6.0);
     doc.setTextColor(100, 116, 139);
-    doc.text('CL', centerX, dwgY + 9.5, { align: 'center' });
+    doc.text('CL', centerX, dwgY + 13.5, { align: 'center' });
 
     doc.setDrawColor(100, 116, 139);
     doc.setLineWidth(0.3);
     doc.setLineDashPattern([2, 1.5], 0);
-    doc.line(centerX, dwgY + 11.0, centerX, surfY + 52);
+    doc.line(centerX, dwgY + 15.0, centerX, surfY + 56);
     doc.setLineDashPattern([], 0); // Reset
 
-    // Carriageway Width Dimension Line at Surface Level
-    doc.setDrawColor(100, 116, 139);
-    doc.setLineWidth(0.25);
-    doc.line(layX, dwgY + 13.0, layX + layW, dwgY + 13.0);
-    doc.line(layX, dwgY + 11.5, layX, dwgY + 14.5);
-    doc.line(layX + layW, dwgY + 11.5, layX + layW, dwgY + 14.5);
+    // Camber Slopes on Right Lane (Centered at X = 134.5)
+    const rightLaneCenter = centerX + layW / 4; // X = 134.5 mm
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(5.4);
+    doc.setTextColor(100, 116, 139);
+    doc.text('<- 2.5% Normal Camber Slope ->', rightLaneCenter, dwgY + 13.5, { align: 'center' });
 
-    // Road Surface Line (Pavement Crown)
+    // Road Surface Line (Pavement Crown Datum at Y = 60 mm)
     doc.setDrawColor(15, 23, 42);
-    doc.setLineWidth(0.6);
+    doc.setLineWidth(0.7);
     doc.line(layX - 4, surfY, layX + layW + 4, surfY);
 
-    // 2. 40 kN Dual-Wheel Axle Assembly on Left Lane (Centered at X = 52)
-    const wheelCenterX = layX + 30; // X = 52
-    const tireW = 10;
+    // 2. 40 kN Dual-Wheel Axle Assembly on Left Lane (Centered at X = 75.5 mm)
+    const wheelCenterX = layX + layW / 4; // X = 75.5 mm
+    const tireW = 9.0;
     const tireH = 7.5;
-    const tireGap = 12; // Center-to-center ~ 22 mm
+    const tireGap = 10.5; // Center-to-center ~ 19.5 mm
 
-    const leftTireX = wheelCenterX - tireGap / 2 - tireW;
-    const rightTireX = wheelCenterX + tireGap / 2;
-    const tireTopY = surfY - tireH; // Y = 49.0
+    const leftTireX = wheelCenterX - tireGap / 2 - tireW; // 75.5 - 5.25 - 9 = 61.25 mm
+    const rightTireX = wheelCenterX + tireGap / 2;         // 75.5 + 5.25 = 80.75 mm
+    const tireTopY = surfY - tireH;                       // 60 - 7.5 = 52.5 mm
 
     // Axle Load Label & Downward Arrow
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.0);
+    doc.setFontSize(5.8);
     doc.setTextColor(234, 88, 12); // Safety Orange
-    doc.text('40 kN DUAL-WHEEL LOAD (q = 0.56 MPa)', wheelCenterX, dwgY + 6.2, { align: 'center' });
+    doc.text('40 kN DUAL-WHEEL LOAD (q = 0.56 MPa)', wheelCenterX, dwgY + 13.0, { align: 'center' });
 
     doc.setDrawColor(234, 88, 12);
     doc.setLineWidth(0.5);
-    doc.line(wheelCenterX, dwgY + 7.2, wheelCenterX, tireTopY - 0.8);
+    doc.line(wheelCenterX, dwgY + 14.0, wheelCenterX, tireTopY - 0.8);
     doc.setFillColor(234, 88, 12);
     doc.triangle(wheelCenterX, tireTopY - 0.8, wheelCenterX - 1.2, tireTopY - 2.4, wheelCenterX + 1.2, tireTopY - 2.4, 'F');
 
@@ -1005,12 +1019,12 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.setTextColor(71, 85, 105);
     doc.text('310 mm c/c', wheelCenterX, tireTopY + 4.5, { align: 'center' });
 
-    // 3. Structural Layer Geometries (Ample spacing for non-overlapping text)
-    const bcH = 5.5;   // BC wearing course
-    const dbmH = 17.5; // DBM binder course (generous height)
-    const wmmH = 14.0; // WMM base course
-    const gsbH = 14.5; // GSB subbase course
-    const subH = 20.5; // Compacted subgrade
+    // 3. Structural Layer Geometries (Total H = 74 mm below surfY)
+    const bcH = 6.5;   // BC wearing course
+    const dbmH = 18.0; // DBM binder course
+    const wmmH = 15.0; // WMM base course
+    const gsbH = 15.0; // GSB subbase course
+    const subH = 19.5; // Compacted subgrade
 
     const bcTopY = surfY;
     const dbmTopY = bcTopY + bcH;
@@ -1025,9 +1039,9 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.rect(layX, bcTopY, layW, bcH, 'FD');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.0);
+    doc.setFontSize(6.2);
     doc.setTextColor(255, 255, 255);
-    doc.text('BITUMINOUS CONCRETE (BC) WEARING COURSE — 40 mm (VG-40 / PMB-120, MoRTH Cl. 507)', layX + layW / 2, bcTopY + 3.8, { align: 'center' });
+    doc.text('BITUMINOUS CONCRETE (BC) WEARING COURSE — 40 mm (VG-40 / PMB-120, MoRTH Cl. 507)', centerX, bcTopY + 4.2, { align: 'center' });
 
     // Layer 2: Dense Bituminous Macadam (DBM) Binder Course
     doc.setFillColor(30, 41, 59); // Dark slate
@@ -1035,56 +1049,56 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.rect(layX, dbmTopY, layW, dbmH, 'FD');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.5);
+    doc.setFontSize(6.6);
     doc.setTextColor(255, 255, 255);
-    doc.text(`DENSE BITUMINOUS MACADAM (DBM) BINDER COURSE — ${h1 - 40} mm (MoRTH Cl. 505)`, layX + layW / 2, dbmTopY + 5.0, { align: 'center' });
+    doc.text(`DENSE BITUMINOUS MACADAM (DBM) BINDER COURSE — ${h1 - 40} mm (MoRTH Cl. 505)`, centerX, dbmTopY + 5.5, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(5.6);
+    doc.setFontSize(5.5);
     doc.setTextColor(203, 213, 225);
-    doc.text(`Total Bituminous: h1 = ${h1} mm  |  E1 = ${e1.toLocaleString()} MPa (35 deg C)  |  v1 = 0.35  |  Damage DF = ${dF.toFixed(2)}`, layX + layW / 2, dbmTopY + 9.2, { align: 'center' });
+    doc.text(`Total Bituminous: h1 = ${h1} mm  |  E1 = ${e1.toLocaleString()} MPa (35 deg C)  |  v1 = 0.35  |  Damage DF = ${dF.toFixed(2)}`, centerX, dbmTopY + 10.2, { align: 'center' });
 
     // Layer 3: Wet Mix Macadam (WMM) Base Course
-    doc.setFillColor(100, 116, 139); // Medium stone
+    doc.setFillColor(71, 85, 105); // Stone
     doc.setDrawColor(51, 65, 85);
     doc.setLineWidth(0.25);
     doc.rect(layX, wmmTopY, layW, wmmH, 'FD');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.5);
+    doc.setFontSize(6.6);
     doc.setTextColor(255, 255, 255);
-    doc.text(`WET MIX MACADAM (WMM) BASE COURSE — ${Math.round(h2/2)} mm (MoRTH Cl. 406)`, layX + layW / 2, wmmTopY + 5.8, { align: 'center' });
+    doc.text(`WET MIX MACADAM (WMM) BASE COURSE — ${Math.round(h2/2)} mm (MoRTH Cl. 406)`, centerX, wmmTopY + 6.0, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(5.6);
+    doc.setFontSize(5.5);
     doc.setTextColor(241, 245, 249);
-    doc.text('Well-Graded Crushed Aggregate Base  |  Compacted to >= 98% Modified Proctor Density', layX + layW / 2, wmmTopY + 10.0, { align: 'center' });
+    doc.text('Well-Graded Crushed Aggregate Base  |  Compacted to >= 98% Modified Proctor Density', centerX, wmmTopY + 10.5, { align: 'center' });
 
     // Layer 4: Granular Sub-Base (GSB Grade-I) Course
-    doc.setFillColor(148, 163, 184); // Light aggregate
+    doc.setFillColor(100, 116, 139); // Light aggregate
     doc.setDrawColor(71, 85, 105);
     doc.rect(layX, gsbTopY, layW, gsbH, 'FD');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.5);
-    doc.setTextColor(15, 23, 42);
-    doc.text(`GRANULAR SUB-BASE (GSB GRADE-I) — ${Math.round(h2/2)} mm (MoRTH Cl. 401)`, layX + layW / 2, gsbTopY + 5.8, { align: 'center' });
+    doc.setFontSize(6.6);
+    doc.setTextColor(255, 255, 255);
+    doc.text(`GRANULAR SUB-BASE (GSB GRADE-I) — ${Math.round(h2/2)} mm (MoRTH Cl. 401)`, centerX, gsbTopY + 6.0, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(5.6);
-    doc.setTextColor(30, 41, 59);
-    doc.text(`Total Granular Crust: h2 = ${h2} mm  |  Composite Modulus E2 = ${e2.toLocaleString()} MPa  |  Subsurface Blanket Drainage`, layX + layW / 2, gsbTopY + 10.0, { align: 'center' });
+    doc.setFontSize(5.5);
+    doc.setTextColor(241, 245, 249);
+    doc.text(`Total Granular Crust: h2 = ${h2} mm  |  Composite Modulus E2 = ${e2.toLocaleString()} MPa  |  Subsurface Blanket Drainage`, centerX, gsbTopY + 10.5, { align: 'center' });
 
     // Boussinesq Stress Dispersion Cone Lines (45 degree dashed lines)
     doc.setDrawColor(234, 88, 12);
     doc.setLineWidth(0.3);
     doc.setLineDashPattern([2, 1.5], 0);
-    doc.line(leftTireX, bcTopY, leftTireX - 16, gsbTopY + gsbH);
-    doc.line(rightTireX + tireW, bcTopY, rightTireX + tireW + 16, gsbTopY + gsbH);
+    doc.line(leftTireX, bcTopY, leftTireX - 14, gsbTopY + gsbH);
+    doc.line(rightTireX + tireW, bcTopY, rightTireX + tireW + 14, gsbTopY + gsbH);
     doc.setLineDashPattern([], 0); // Reset
 
     // Layer 5: Prepared Compacted Subgrade Foundation
-    doc.setFillColor(241, 245, 249); // Soft foundation
+    doc.setFillColor(248, 250, 252); // Foundation
     doc.setDrawColor(100, 116, 139);
     doc.rect(layX, subTopY, layW, subH, 'FD');
 
@@ -1096,14 +1110,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.5);
+    doc.setFontSize(6.6);
     doc.setTextColor(15, 23, 42);
-    doc.text('PREPARED SUBGRADE (TOP 500 mm) — Compacted to >= 97% MDD (IS:2720 Part 8)', layX + layW / 2, subTopY + 13.0, { align: 'center' });
+    doc.text('PREPARED SUBGRADE (TOP 500 mm) — Compacted to >= 97% MDD (IS:2720 Part 8)', centerX, subTopY + 12.5, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(5.6);
+    doc.setFontSize(5.5);
     doc.setTextColor(71, 85, 105);
-    doc.text(`Subgrade Modulus Ef = ${e3} MPa  |  In-Situ CBR ~ ${cbrStr}% Native  |  Design Rutting Life Nr = ${(nr / 1e6).toFixed(1)} MSA  |  v3 = 0.40`, layX + layW / 2, subTopY + 17.0, { align: 'center' });
+    doc.text(`Subgrade Modulus Ef = ${e3} MPa  |  In-Situ CBR ~ ${cbrStr}% Native  |  Design Rutting Life Nr = ${(nr / 1e6).toFixed(1)} MSA  |  v3 = 0.40`, centerX, subTopY + 17.0, { align: 'center' });
 
     // =========================================================================
     // CRITICAL STRAIN CALLOUTS (Rendered strictly on top of all layer geometries)
@@ -1113,23 +1127,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const strainLineY = dbmTopY + dbmH;
     doc.setDrawColor(234, 88, 12);
     doc.setLineWidth(0.6);
-    doc.line(layX + 10, strainLineY, layX + layW - 10, strainLineY);
+    doc.line(layX + 6, strainLineY, layX + layW - 6, strainLineY);
 
     // Bidirectional Arrows
     doc.setFillColor(234, 88, 12);
-    doc.triangle(layX + 10, strainLineY, layX + 13, strainLineY - 1.2, layX + 13, strainLineY + 1.2, 'F');
-    doc.triangle(layX + layW - 10, strainLineY, layX + layW - 13, strainLineY - 1.2, layX + layW - 13, strainLineY + 1.2, 'F');
+    doc.triangle(layX + 6, strainLineY, layX + 9, strainLineY - 1.2, layX + 9, strainLineY + 1.2, 'F');
+    doc.triangle(layX + layW - 6, strainLineY, layX + layW - 9, strainLineY - 1.2, layX + layW - 9, strainLineY + 1.2, 'F');
 
     // Tensile Strain Callout Badge (Solid opaque card on top)
+    const badgeW = 106;
     doc.setFillColor(15, 23, 42);
     doc.setDrawColor(234, 88, 12);
     doc.setLineWidth(0.35);
-    doc.roundedRect(layX + layW / 2 - 58, strainLineY - 3.2, 116, 6.4, 1.2, 1.2, 'FD');
+    doc.roundedRect(centerX - badgeW / 2, strainLineY - 3.4, badgeW, 6.8, 1.2, 1.2, 'FD');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(5.9);
+    doc.setFontSize(5.8);
     doc.setTextColor(251, 146, 60); // Bright Orange
-    doc.text(`CRITICAL TENSILE STRAIN (et) = ${ts.toFixed(1)} microstrain  (Allowable <= ${tsAllowable.toFixed(1)} uE  |  Margin: +${tsMargin}%)`, layX + layW / 2, strainLineY + 1.0, { align: 'center' });
+    doc.text(`CRITICAL TENSILE STRAIN (et) = ${ts.toFixed(1)} microstrain  (Allowable <= ${tsAllowable.toFixed(1)} uE  |  Margin: ${tsMargin})`, centerX, strainLineY + 1.0, { align: 'center' });
 
     // B. Critical Compressive Strain (ev) Arrow & Callout Badge at top of Subgrade
     doc.setDrawColor(2, 132, 199);
@@ -1141,41 +1156,65 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.setFillColor(15, 23, 42);
     doc.setDrawColor(56, 189, 248);
     doc.setLineWidth(0.35);
-    doc.roundedRect(layX + layW / 2 - 58, subTopY + 2.5, 116, 6.4, 1.2, 1.2, 'FD');
+    doc.roundedRect(centerX - badgeW / 2, subTopY + 2.0, badgeW, 6.8, 1.2, 1.2, 'FD');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(5.9);
-    doc.setTextColor(56, 189, 248);
-    doc.text(`CRITICAL COMPRESSIVE STRAIN (ev) = ${cs.toFixed(1)} microstrain  (Allowable <= ${csAllowable.toFixed(1)} uE  |  Margin: +${csMargin}%)`, layX + layW / 2, subTopY + 6.7, { align: 'center' });
-
-    // Right-Side Dimension Lines (Neatly placed at X = layX + layW + 4 mm)
-    const dimX = layX + layW + 4;
-    doc.setDrawColor(71, 85, 105);
-    doc.setLineWidth(0.3);
-
-    // Bituminous Dimension
-    doc.line(dimX, bcTopY, dimX, dbmTopY + dbmH);
-    doc.line(dimX - 1.5, bcTopY, dimX + 1.5, bcTopY);
-    doc.line(dimX - 1.5, dbmTopY + dbmH, dimX + 1.5, dbmTopY + dbmH);
     doc.setFontSize(5.8);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(15, 23, 42);
-    doc.text(`${h1} mm`, dimX + 2.5, bcTopY + (bcH + dbmH) / 2 + 1.2);
+    doc.setTextColor(56, 189, 248);
+    doc.text(`CRITICAL COMPRESSIVE STRAIN (ev) = ${cs.toFixed(1)} microstrain  (Allowable <= ${csAllowable.toFixed(1)} uE  |  Margin: ${csMargin})`, centerX, subTopY + 6.4, { align: 'center' });
 
-    // Granular Dimension
-    doc.line(dimX, wmmTopY, dimX, gsbTopY + gsbH);
-    doc.line(dimX - 1.5, wmmTopY, dimX + 1.5, wmmTopY);
-    doc.line(dimX - 1.5, gsbTopY + gsbH, dimX + 1.5, gsbTopY + gsbH);
-    doc.text(`${h2} mm`, dimX + 2.5, wmmTopY + (wmmH + gsbH) / 2 + 1.2);
+    // =========================================================================
+    // DIMENSION BRACKETS (Left Side: Total Crust Depth | Right Side: Course Thicknesses)
+    // =========================================================================
 
-    // Total Crust Dimension (Outer Right)
-    const totalDimX = dimX + 12;
+    // Left Side: Total Crust Depth H = h1 + h2 (Cleanly placed at X = 36 mm, with 5mm margin to outer border)
+    const leftDimX = layX - 10; // X = 36 mm
     doc.setDrawColor(234, 88, 12);
-    doc.line(totalDimX, bcTopY, totalDimX, gsbTopY + gsbH);
-    doc.line(totalDimX - 1.5, bcTopY, totalDimX + 1.5, bcTopY);
-    doc.line(totalDimX - 1.5, gsbTopY + gsbH, totalDimX + 1.5, gsbTopY + gsbH);
+    doc.setLineWidth(0.4);
+    doc.line(leftDimX, bcTopY, leftDimX, gsbTopY + gsbH);
+    doc.line(leftDimX - 2.0, bcTopY, leftDimX + 2.0, bcTopY);
+    doc.line(leftDimX - 2.0, gsbTopY + gsbH, leftDimX + 2.0, gsbTopY + gsbH);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
     doc.setTextColor(234, 88, 12);
-    doc.text(`TOTAL H = ${h1 + h2} mm`, totalDimX + 2.5, bcTopY + (bcH + dbmH + wmmH + gsbH) / 2 + 1.2);
+    doc.text('TOTAL CRUST', leftDimX - 2.5, bcTopY + (bcH + dbmH + wmmH + gsbH) / 2 - 2.0, { align: 'right' });
+    doc.text(`H = ${h1 + h2} mm`, leftDimX - 2.5, bcTopY + (bcH + dbmH + wmmH + gsbH) / 2 + 2.5, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(5.2);
+    doc.setTextColor(100, 116, 139);
+    doc.text('(IRC:37 Depth)', leftDimX - 2.5, bcTopY + (bcH + dbmH + wmmH + gsbH) / 2 + 6.5, { align: 'right' });
+
+    // Right Side: Layer Course Thicknesses (Cleanly placed at X = 174 mm, with 7.5mm margin to outer border)
+    const rightDimX = layX + layW + 10; // X = 174 mm
+    doc.setDrawColor(71, 85, 105);
+    doc.setLineWidth(0.35);
+
+    // Bituminous Crust (h1)
+    doc.line(rightDimX, bcTopY, rightDimX, dbmTopY + dbmH);
+    doc.line(rightDimX - 2.0, bcTopY, rightDimX + 2.0, bcTopY);
+    doc.line(rightDimX - 2.0, dbmTopY + dbmH, rightDimX + 2.0, dbmTopY + dbmH);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
+    doc.setTextColor(15, 23, 42);
+    doc.text(`${h1} mm`, rightDimX + 2.5, bcTopY + (bcH + dbmH) / 2 - 0.5);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(5.2);
+    doc.setTextColor(100, 116, 139);
+    doc.text('(BC + DBM)', rightDimX + 2.5, bcTopY + (bcH + dbmH) / 2 + 3.5);
+
+    // Granular Crust (h2)
+    doc.line(rightDimX, wmmTopY, rightDimX, gsbTopY + gsbH);
+    doc.line(rightDimX - 2.0, wmmTopY, rightDimX + 2.0, wmmTopY);
+    doc.line(rightDimX - 2.0, gsbTopY + gsbH, rightDimX + 2.0, gsbTopY + gsbH);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
+    doc.setTextColor(15, 23, 42);
+    doc.text(`${h2} mm`, rightDimX + 2.5, wmmTopY + (wmmH + gsbH) / 2 - 0.5);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(5.2);
+    doc.setTextColor(100, 116, 139);
+    doc.text('(WMM + GSB)', rightDimX + 2.5, wmmTopY + (wmmH + gsbH) / 2 + 3.5);
 
     // ==========================================
     // 5. Table 4: Structural Layer Continuum Specifications Matrix (MoRTH Rev-5)
@@ -1277,7 +1316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     doc.setTextColor(15, 23, 42);
     doc.text('NATIONAL HIGHWAYS / PWD', cadX + 17, notesY + 10.5);
     doc.text('2D STRUCTURAL CROSS-SECTION', cadX + 17, notesY + 17.5);
-    doc.text(`NH-PAVE-${docRef}`, cadX + 17, notesY + 24.5);
+    doc.text(`NH-${docRef}`, cadX + 17, notesY + 24.5);
     doc.text('N.T.S.  |  REV: 03 (FINAL)', cadX + 17, notesY + 31.5);
     doc.setTextColor(16, 185, 129); // Green
     doc.text('APPROVED FOR EXECUTION', cadX + 17, notesY + 38.2);
